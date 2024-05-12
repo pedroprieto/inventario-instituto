@@ -1,8 +1,17 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 const schema = a.schema({
-  Todo: a
+  Activo: a
     .model({
-      content: a.string(),
+      nombre: a.string(),
+      tipoId: a.id(),
+      tipo: a.belongsTo("Tipo", "tipoId"),
+    })
+    .authorization((allow) => [allow.guest()]),
+
+  Tipo: a
+    .model({
+      nombre: a.string(),
+      activos: a.hasMany("Activo", "tipoId"),
     })
     .authorization((allow) => [allow.guest()]),
 });
