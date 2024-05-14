@@ -4,7 +4,10 @@ const schema = a.schema({
     .model({
       nombre: a.string(),
       tipoId: a.id(),
+      salaId: a.id(),
+      sala: a.belongsTo("Sala", "salaId"),
       tipo: a.belongsTo("Tipo", "tipoId"),
+      salas: a.hasMany("ActivoSala", "activoId"),
     })
     .authorization((allow) => [allow.guest()]),
 
@@ -12,6 +15,23 @@ const schema = a.schema({
     .model({
       nombre: a.string(),
       activos: a.hasMany("Activo", "tipoId"),
+    })
+    .authorization((allow) => [allow.guest()]),
+
+  ActivoSala: a
+    .model({
+      activoId: a.id().required(),
+      salaId: a.id().required(),
+      activo: a.belongsTo("Activo", "activoId"),
+      sala: a.belongsTo("Sala", "salaId"),
+    })
+    .authorization((allow) => [allow.guest()]),
+
+  Sala: a
+    .model({
+      nombre: a.string(),
+      historicoActivos: a.hasMany("ActivoSala", "salaId"),
+      activos: a.hasMany("Activo", "salaId"),
     })
     .authorization((allow) => [allow.guest()]),
 });
