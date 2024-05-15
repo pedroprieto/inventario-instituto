@@ -35,6 +35,8 @@
           </v-btn>
           <v-btn icon="mdi-delete" variant="text" @click="deleteItem(item)">
           </v-btn>
+          <v-btn icon="mdi-eye" variant="text" @click="visitItem(item)">
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -49,7 +51,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 const props = defineProps(["title", "items", "headers", "loading"]);
-const emit = defineEmits(["delete", "edit"]);
+const emit = defineEmits(["delete", "edit", "visit"]);
 let dialogDelete = ref(false);
 
 let itemToDelete = ref({});
@@ -62,6 +64,10 @@ function deleteItemConfirm() {
 
 function editItem(item) {
   emit("edit", item);
+}
+
+function visitItem(item) {
+  emit("visit", item);
 }
 
 async function close() {

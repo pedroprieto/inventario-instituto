@@ -4,10 +4,13 @@
 
 <script setup>
 import { useAppStore } from "../store/app";
+import { defineProps } from "vue";
+const props = defineProps(["sala"]);
 const store = useAppStore();
-await store.listActivos();
+
+await store.listActivosBySalaId(props.sala);
 
 function update() {
-  store.listActivos();
+  store.listActivosBySalaId(props.sala);
 }
 </script>

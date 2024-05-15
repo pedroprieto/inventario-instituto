@@ -32,8 +32,11 @@
     "@mdi/font": "7.0.96",
     "aws-amplify": "^6.3.0",
     "pinia": "^2.1.7",
+    "qrcode.vue": "^3.4.1",
     "roboto-fontface": "*",
     "vue": "^3.4.0",
+    "vue-barcode-reader": "^1.0.3",
+    "vue-qrcode-reader": "^5.5.4",
     "vue-router": "^4.3.2",
     "vuetify": "^3.5.0"
   }

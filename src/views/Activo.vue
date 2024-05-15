@@ -1,12 +1,51 @@
 <template>
-  <ActivoForm
-    @submit="(el) => $emit('editActivo', el)"
-    :salas="salas"
-    :tipos="tipos"
-    :activoItem="activoItem"
-  ></ActivoForm>
+  <v-container v-if="store.currentItem">
+    <v-card>
+      <v-card-item>
+        <v-card-title>Activo: {{ store.currentItem.nombre }}</v-card-title>
+        <v-card-subtitle>
+          <v-tabs color="deep-purple-accent-4" align-tabs="center">
+            <v-tab
+              :to="{
+                name: 'activoDatos',
+                params: { activo: activo },
+              }"
+              >Datos
+            </v-tab>
+            <v-tab
+              :to="{
+                name: 'activoHistorico',
+                params: { activo: activo },
+              }"
+              >Histórico
+            </v-tab>
+          </v-tabs>
+        </v-card-subtitle>
+      </v-card-item>
+      <v-card-text>
+        <v-card elevation="10">
+          <router-view> </router-view>
+        </v-card>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup>
-const props = defineProps(["salas", "tipos", "activoItem"]);
+import { useAppStore } from "../store/app";
+
+const store = useAppStore();
+
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const props = defineProps(["activo"]);
+
+await store.setCurrentItem(props.activo);
+
+function volverLista() {
+  router.push({
+    name: "activos",
+  });
+}
 </script>

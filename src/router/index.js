@@ -3,6 +3,13 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
   {
+    path: "/activos/:activo/datos/imprimir",
+    name: "activoImprimir",
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "home" */ "@/views/ActivoImprimir.vue"),
+  },
+  {
     path: "/",
     component: () => import("@/layouts/default/Default.vue"),
     children: [
@@ -16,16 +23,39 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "home" */ "@/views/Activos.vue"),
         props: true,
+      },
+      {
+        path: "/activos/:activo",
+        name: "activo",
+        meta: {
+          prompt: "Activo",
+        },
+        component: () =>
+          import(/* webpackChunkName: "home" */ "@/views/Activo.vue"),
+        props: true,
         children: [
           {
-            path: "/activos/:activo",
-            name: "activo",
-            meta: {
-              prompt: "Activo",
-            },
-            component: () =>
-              import(/* webpackChunkName: "home" */ "@/views/Activo.vue"),
+            path: "/activos/:activo/edit",
+            name: "activoEdit",
             props: true,
+            component: () =>
+              import(/* webpackChunkName: "home" */ "@/views/ActivoEdit.vue"),
+          },
+          {
+            path: "/activos/:activo/historico",
+            name: "activoHistorico",
+            props: true,
+            component: () =>
+              import(
+                /* webpackChunkName: "home" */ "@/views/ActivoHistorico.vue"
+              ),
+          },
+          {
+            path: "/activos/:activo/datos",
+            name: "activoDatos",
+            props: true,
+            component: () =>
+              import(/* webpackChunkName: "home" */ "@/views/ActivoDatos.vue"),
           },
         ],
       },
@@ -50,10 +80,34 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "home" */ "@/views/Salas.vue"),
         props: true,
+      },
+      {
+        path: "/salas/:sala",
+        name: "sala",
+        meta: {
+          prompt: "Sala",
+        },
+        component: () =>
+          import(/* webpackChunkName: "home" */ "@/views/Sala.vue"),
+        props: true,
         children: [
           {
+            path: "/salas/:sala/datos",
+            name: "salaDatos",
+            props: true,
+            component: () =>
+              import(/* webpackChunkName: "home" */ "@/views/SalaDatos.vue"),
+          },
+          {
+            path: "/salas/:sala/activos",
+            name: "salaActivos",
+            props: true,
+            component: () =>
+              import(/* webpackChunkName: "home" */ "@/views/SalaActivos.vue"),
+          },
+          {
             path: "/salas/:sala/auditorias",
-            name: "auditoriasSala",
+            name: "salaAuditorias",
             meta: {
               prompt: "Auditorías",
             },
@@ -63,7 +117,7 @@ const routes = [
             children: [
               {
                 path: "/salas/:sala/auditorias/:auditoria",
-                name: "Ver auditoría",
+                name: "auditoria",
                 meta: {
                   prompt: "Auditoría",
                 },
