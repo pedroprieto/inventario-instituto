@@ -30,6 +30,12 @@
           </v-toolbar>
         </template>
 
+        <template v-slot:item.salaId="{ item }">
+          {{ store.getNombreSalaById(item.salaId) }}</template
+        >
+        <template v-slot:item.tipoId="{ item }">
+          {{ store.getNombreTipoById(item.tipoId) }}</template
+        >
         <template v-slot:item.actions="{ item }">
           <v-btn icon="mdi-pencil" variant="text" @click="editItem(item)">
           </v-btn>
@@ -53,6 +59,9 @@ import { ref, nextTick } from "vue";
 const props = defineProps(["title", "items", "headers", "loading"]);
 const emit = defineEmits(["delete", "edit", "visit"]);
 let dialogDelete = ref(false);
+
+import { useAppStore } from "../store/app";
+const store = useAppStore();
 
 let itemToDelete = ref({});
 let search = ref("");

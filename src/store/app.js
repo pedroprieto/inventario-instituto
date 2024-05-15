@@ -134,5 +134,11 @@ export const useAppStore = defineStore("app", {
         });
       this.activos = items;
     },
+    getNombreSalaById(salaId) {
+      return this.salas.find((el) => el.id == salaId).nombre;
+    },
+    getNombreTipoById(tipoId) {
+      return this.tipos.find((el) => el.id == tipoId).nombre;
+    },
   },
 });
