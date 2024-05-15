@@ -15,16 +15,26 @@
           <v-icon size="large" class="me-2"> mdi-plus </v-icon>
           Añadir
         </v-btn>
+        <v-btn @click="showBatchActivoForm" color="primary" dark class="mb-2">
+          <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
+          Añadir batch
+        </v-btn>
       </template>
     </ListView>
     <ActivoForm
       :formTitle="formTitle"
-      v-else
+      v-else-if="showForm == 1"
       @envio="editOrCreate"
       @close="closeForm"
       :activoItem="store.currentItem"
       :isEdit="isEdit"
     ></ActivoForm>
+    <BatchActivoForm
+      formTitle="Añadir un conjunto de activos"
+      v-else
+      @envio="batchCreate"
+      @close="closeForm"
+    ></BatchActivoForm>
   </v-container>
 </template>
 
@@ -62,7 +72,7 @@ const headers = [
 
 const client = generateClient();
 let loading = ref(false);
-let showForm = ref(false);
+let showForm = ref(0);
 let isEdit = ref(false);
 let formTitle = ref("");
 
@@ -70,7 +80,11 @@ function showCreateActivoForm() {
   formTitle.value = "Crear activo";
   store.currentItem = {};
   isEdit.value = false;
-  showForm.value = true;
+  showForm.value = 1;
+}
+
+function showBatchActivoForm() {
+  showForm.value = 2;
 }
 
 function showEditActivoForm(item) {
@@ -78,7 +92,7 @@ function showEditActivoForm(item) {
   store.currentItem = {};
   isEdit.value = false;
   isEdit.value = true;
-  showForm.value = true;
+  showForm.value = 1;
 }
 
 function visitActivo(item) {
@@ -98,6 +112,12 @@ async function editOrCreate(activoData, isEdit) {
   emit("changeEvent");
 }
 
+async function batchCreate(data) {
+  await store.batchCreateActivos(data);
+  closeForm();
+  emit("changeEvent");
+}
+
 async function deleteItem(item) {
   await store.deleteActivo(item);
 
@@ -105,6 +125,6 @@ async function deleteItem(item) {
 }
 
 function closeForm() {
-  showForm.value = false;
+  showForm.value = 0;
 }
 </script>

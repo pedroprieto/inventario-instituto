@@ -117,6 +117,35 @@ export const useAppStore = defineStore("app", {
         });
       });
     },
+    async batchCreateActivos(data) {
+      let elemPromises = [];
+      let j = parseInt(data.inicial);
+      for (
+        let i = parseInt(data.inicial);
+        i < parseInt(data.inicial) + parseInt(data.numero);
+        i++
+      ) {
+        let el = {
+          nombre: data.prefijo + i,
+          salaId: data.salaId,
+          tipoId: data.tipoId,
+        };
+        elemPromises.push(client.models.Activo.create(el));
+      }
+
+      let resuls = await Promise.all(elemPromises);
+
+      let elemPromises2 = [];
+      for (let res of resuls) {
+        elemPromises2.push(
+          client.models.ActivoSala.create({
+            activoId: res.data.id,
+            salaId: data.salaId,
+          })
+        );
+      }
+      return Promise.all(elemPromises2);
+    },
     async listActivos() {
       let filter = {};
       /*if (selectedSalas.value.length) {
