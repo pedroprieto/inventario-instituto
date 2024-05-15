@@ -105,7 +105,7 @@ export const useAppStore = defineStore("app", {
       });
     },
     async createActivo(data) {
-      client.models.Activo.create({
+      return client.models.Activo.create({
         nombre: data.nombre,
         salaId: data.salaId,
         tipoId: data.tipoId,

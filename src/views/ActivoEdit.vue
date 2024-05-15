@@ -1,6 +1,6 @@
 <template>
   <ActivoForm
-    :formTitle="formTitle"
+    :formTitle="store.currentItem.nombre"
     @envio="update"
     @close="closeForm"
     :salas="store.salas"
@@ -18,7 +18,7 @@ const store = useAppStore();
 const router = useRouter();
 
 function closeForm() {
-  router.go(-1);
+  router.back();
 }
 
 async function update(item) {

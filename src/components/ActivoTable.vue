@@ -22,9 +22,7 @@
       v-else
       @envio="editOrCreate"
       @close="closeForm"
-      :salas="store.salas"
-      :tipos="store.tipos"
-      :activoItem="activoItem"
+      :activoItem="store.currentItem"
       :isEdit="isEdit"
     ></ActivoForm>
   </v-container>
@@ -63,8 +61,6 @@ const headers = [
 ];
 
 const client = generateClient();
-let selectedSalas = ref([]);
-let activoItem = ref({});
 let loading = ref(false);
 let showForm = ref(false);
 let isEdit = ref(false);
@@ -72,14 +68,15 @@ let formTitle = ref("");
 
 function showCreateActivoForm() {
   formTitle.value = "Crear activo";
-  activoItem.value = {};
+  store.currentItem = {};
   isEdit.value = false;
   showForm.value = true;
 }
 
 function showEditActivoForm(item) {
   formTitle.value = "Editar item";
-  activoItem.value = item;
+  store.currentItem = {};
+  isEdit.value = false;
   isEdit.value = true;
   showForm.value = true;
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="true" :fullscreen="true">
+  <v-dialog :model-value="mostrar" :fullscreen="true">
     <v-card>
       <v-container>
         <v-card-title>
@@ -14,14 +14,14 @@
             ></v-text-field>
             <v-select
               v-model="activoData.salaId"
-              :items="salas"
+              :items="store.salas"
               item-title="nombre"
               item-value="id"
               label="Sala"
             ></v-select>
             <v-select
               v-model="activoData.tipoId"
-              :items="tipos"
+              :items="store.tipos"
               item-title="nombre"
               item-value="id"
               label="Tipo"
@@ -37,7 +37,7 @@
               color="primary"
               >Enviar</v-btn
             >
-            <v-btn class="me-4" type="button" @click="$emit('close')"
+            <v-btn class="me-4" type="button" @click="closeForm"
               >Cancelar</v-btn
             >
           </v-form>
@@ -49,19 +49,22 @@
 
 <script setup>
 import { ref } from "vue";
+import { useAppStore } from "../store/app";
+
+const store = useAppStore();
 const emit = defineEmits(["envio", "close"]);
-const props = defineProps([
-  "formTitle",
-  "salas",
-  "tipos",
-  "activoItem",
-  "isEdit",
-]);
+const props = defineProps(["formTitle", "activoItem", "isEdit"]);
 let disabled = ref(false);
 let activoData = ref(Object.assign({}, props.activoItem));
+let mostrar = ref(true);
 
 function enviar() {
   disabled.value = true;
   emit("envio", activoData.value, props.isEdit);
+}
+
+function closeForm() {
+  mostrar.value = false;
+  emit("close");
 }
 </script>

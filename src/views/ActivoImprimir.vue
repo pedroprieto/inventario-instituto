@@ -25,8 +25,17 @@
     </div>
   </div>
   <v-container class="controles">
-    <v-row>
+    <v-row class="controles">
       <v-col>
+        <v-btn
+          elevated
+          color="secondary"
+          size="x-large"
+          icon="mdi-arrow-left"
+          @click="back"
+        ></v-btn>
+        &nbsp;
+
         <v-btn
           elevated
           color="primary"
@@ -43,9 +52,15 @@
 import { ref } from "vue";
 import QrcodeVue from "qrcode.vue";
 import { useAppStore } from "../store/app";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 function imprimir() {
   window.print();
+}
+
+function back() {
+  router.back();
 }
 
 const store = useAppStore();
