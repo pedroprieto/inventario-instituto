@@ -44,6 +44,7 @@ async function updateSala(item) {
   await store.updateSala(item);
   closeForm();
   await store.setCurrentSala(item.id);
+  await store.getSalas();
 }
 </script>
 

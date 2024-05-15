@@ -2,14 +2,24 @@
   <v-container>
     <v-card>
       <v-card-item>
-        <v-card-title>Sala: {{ sala }}</v-card-title>
-        <v-select
-          v-model="selectedSala"
-          :items="store.salas"
-          item-title="nombre"
-          item-value="id"
-          label="Salas"
-        ></v-select>
+        <v-card-title>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="9">
+                Sala: {{ store.currentSala.nombre }}
+              </v-col>
+              <v-col cols="12" sm="3">
+                <v-select
+                  v-model="selectedSala"
+                  :items="store.salas"
+                  item-title="nombre"
+                  item-value="id"
+                  label="Sala"
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-title>
         <v-card-subtitle>
           <v-tabs color="deep-purple-accent-4" align-tabs="center">
             <v-tab
