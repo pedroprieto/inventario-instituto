@@ -49,7 +49,7 @@
 
 <script setup>
 import { ref } from "vue";
-const emit = defineEmits(["envio"]);
+const emit = defineEmits(["envio", "close"]);
 const props = defineProps([
   "formTitle",
   "salas",

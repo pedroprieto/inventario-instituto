@@ -4,7 +4,6 @@
       <v-card-item>
         <v-card-title>Sala: {{ sala }}</v-card-title>
         <v-select
-          @change="listActivos"
           v-model="selectedSala"
           :items="store.salas"
           item-title="nombre"

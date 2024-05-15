@@ -36,7 +36,7 @@
 import { ref } from "vue";
 const props = defineProps(["formTitle", "salaItem", "isEdit"]);
 let salaData = ref(Object.assign({}, props.salaItem));
-const emit = defineEmits(["envio"]);
+const emit = defineEmits(["envio", "close"]);
 let disabled = ref(false);
 
 function enviar() {

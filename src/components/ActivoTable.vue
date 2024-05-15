@@ -16,18 +16,6 @@
           Añadir
         </v-btn>
       </template>
-      <template #busqueda>
-        <v-select
-          @change="listActivos"
-          v-model="selectedSalas"
-          :items="store.salas"
-          item-title="nombre"
-          item-value="id"
-          label="Salas"
-          chips
-          multiple
-        ></v-select>
-      </template>
     </ListView>
     <ActivoForm
       :formTitle="formTitle"
@@ -81,10 +69,6 @@ let loading = ref(false);
 let showForm = ref(false);
 let isEdit = ref(false);
 let formTitle = ref("");
-
-watch(selectedSalas, async (newQuestion, oldQuestion) => {
-  listActivos();
-});
 
 function showCreateActivoForm() {
   formTitle.value = "Crear activo";
