@@ -135,10 +135,14 @@ export const useAppStore = defineStore("app", {
       this.activos = items;
     },
     getNombreSalaById(salaId) {
-      return this.salas.find((el) => el.id == salaId).nombre;
+      let sala = this.salas.find((el) => el.id == salaId);
+      if (sala) return sala.nombre;
+      return salaId;
     },
     getNombreTipoById(tipoId) {
-      return this.tipos.find((el) => el.id == tipoId).nombre;
+      let tipo = this.tipos.find((el) => el.id == tipoId);
+      if (tipo) return tipo.nombre;
+      return tipoId;
     },
   },
 });
