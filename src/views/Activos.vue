@@ -18,7 +18,7 @@
         <v-select
           @change="listActivos"
           v-model="selectedSalas"
-          :items="salas"
+          :items="store.salas"
           item-title="nombre"
           item-value="id"
           label="Salas"
@@ -32,8 +32,8 @@
       v-if="showForm"
       @envio="editOrCreate"
       @close="closeForm"
-      :salas="salas"
-      :tipos="tipos"
+      :salas="store.salas"
+      :tipos="store.tipos"
       :activoItem="activoItem"
       :isEdit="isEdit"
     ></ActivoForm>
@@ -43,6 +43,9 @@
 <script setup>
 import { generateClient } from "aws-amplify/data";
 import { onMounted, ref, watch } from "vue";
+import { useAppStore } from "../store/app";
+
+const store = useAppStore();
 
 const headers = [
   {
@@ -68,8 +71,6 @@ const headers = [
 
 const client = generateClient();
 const activos = ref([]);
-const salas = ref([]);
-const tipos = ref([]);
 let selectedSalas = ref([]);
 let activoItem = ref({});
 let loading = ref(true);
@@ -157,10 +158,6 @@ function createActivo(data) {
 }
 
 onMounted(async () => {
-  let res = await client.models.Sala.list();
-  salas.value = res.data;
-  res = await client.models.Tipo.list();
-  tipos.value = res.data;
   listActivos();
 });
 </script>

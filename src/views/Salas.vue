@@ -5,7 +5,7 @@
       @edit="showEditSalaForm"
       :headers="headers"
       title="Salas"
-      :items="salas"
+      :items="store.salas"
       :loading="loading"
     >
       <template #anyadir>
@@ -29,7 +29,10 @@
 
 <script setup>
 import { generateClient } from "aws-amplify/data";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
+import { useAppStore } from "../store/app";
+
+const store = useAppStore();
 
 const headers = [
   {
@@ -42,25 +45,19 @@ const headers = [
 ];
 
 const client = generateClient();
-const salas = ref([]);
 let salaItem = ref({});
-let loading = ref(true);
+let loading = ref(false);
 let showForm = ref(false);
 let isEdit = ref(false);
 let formTitle = ref("");
 
-async function listSalas() {
-  loading.value = true;
-  const { data: items, errors } = await client.models.Sala.list();
-  salas.value = items;
-  loading.value = false;
-}
-
 async function deleteSala(item) {
+  loading.value = true;
   await client.models.Sala.delete({
     id: item.id,
   });
-  listSalas();
+  await store.getSalas();
+  loading.value = false;
 }
 
 async function updateSala(item) {
@@ -85,13 +82,15 @@ function showEditSalaForm(item) {
 }
 
 async function editOrCreate(salaData, isEdit) {
+  loading.value = true;
   if (isEdit) {
     await updateSala(salaData);
   } else {
     await createSala(salaData);
   }
   closeForm();
-  listSalas();
+  await store.getSalas();
+  loading.value = false;
 }
 
 function closeForm() {
@@ -103,8 +102,4 @@ async function createSala(data) {
     nombre: data.nombre,
   });
 }
-
-onMounted(async () => {
-  listSalas();
-});
 </script>

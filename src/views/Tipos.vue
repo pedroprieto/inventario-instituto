@@ -5,7 +5,7 @@
       @edit="showEditTipoForm"
       :headers="headers"
       title="Tipos"
-      :items="tipos"
+      :items="store.tipos"
       :loading="loading"
     >
       <template #anyadir>
@@ -29,7 +29,10 @@
 
 <script setup>
 import { generateClient } from "aws-amplify/data";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
+import { useAppStore } from "../store/app";
+
+const store = useAppStore();
 
 const headers = [
   {
@@ -42,25 +45,19 @@ const headers = [
 ];
 
 const client = generateClient();
-const tipos = ref([]);
 let tipoItem = ref({});
-let loading = ref(true);
+let loading = ref(false);
 let showForm = ref(false);
 let isEdit = ref(false);
 let formTitle = ref("");
 
-async function listTipos() {
-  loading.value = true;
-  const { data: items, errors } = await client.models.Tipo.list();
-  tipos.value = items;
-  loading.value = false;
-}
-
 async function deleteTipo(item) {
+  loading.value = true;
   await client.models.Tipo.delete({
     id: item.id,
   });
-  listTipos();
+  await store.getTipos();
+  loading.value = false;
 }
 
 async function updateTipo(item) {
@@ -85,28 +82,24 @@ function showEditTipoForm(item) {
 }
 
 async function editOrCreate(tipoData, isEdit) {
+  loading.value = true;
   if (isEdit) {
     await updateTipo(tipoData);
   } else {
     await createTipo(tipoData);
   }
   closeForm();
-  listTipos();
+  await store.getTipos();
+  loading.value = false;
 }
 
 function closeForm() {
   showForm.value = false;
 }
 
-function createTipo(data) {
-  client.models.Tipo.create({
+async function createTipo(data) {
+  return client.models.Tipo.create({
     nombre: data.nombre,
-  }).then(() => {
-    listTipos();
   });
 }
-
-onMounted(async () => {
-  listTipos();
-});
 </script>

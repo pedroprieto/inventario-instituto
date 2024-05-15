@@ -9,4 +9,10 @@
   </v-app>
 </template>
 
-<script setup></script>
+<script setup>
+import { useAppStore } from "./store/app";
+
+const store = useAppStore();
+store.getSalas();
+store.getTipos();
+</script>
