@@ -30,6 +30,18 @@
           </v-toolbar>
         </template>
 
+        <template v-slot:item.tipos="{ item }">
+          <v-chip size="x-small" v-for="tipo in item.tipos">
+            {{ store.getNombreTipoById(tipo) }}
+          </v-chip>
+        </template>
+
+        <template v-slot:item.cerrada="{ item }">
+          <v-icon v-if="item.cerrada" icon="mdi-check"></v-icon>
+        </template>
+        <template v-slot:item.createdAt="{ item }">
+          {{ new Date(item.createdAt).toLocaleString() }}</template
+        >
         <template v-slot:item.salaId="{ item }">
           {{ store.getNombreSalaById(item.salaId) }}</template
         >

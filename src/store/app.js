@@ -8,6 +8,7 @@ export const useAppStore = defineStore("app", {
       activos: [],
       salas: [],
       tipos: [],
+      auditorias: [],
       currentItem: null,
       currentSala: null,
     };
@@ -172,6 +173,33 @@ export const useAppStore = defineStore("app", {
       let tipo = this.tipos.find((el) => el.id == tipoId);
       if (tipo) return tipo.nombre;
       return tipoId;
+    },
+    async listAuditoriasBySalaId(salaId) {
+      const { data: items, errors } =
+        await client.models.Auditoria.listAuditoriaBySalaId({
+          salaId,
+        });
+      this.auditorias = items;
+    },
+    async deleteAuditoria(item) {
+      await client.models.Auditoria.delete({
+        id: item.id,
+      });
+    },
+    async updateAuditoria(item) {
+      return client.models.Auditoria.update({
+        id: item.id,
+        salaId: item.salaId,
+        cerrada: item.cerrada,
+        tipos: item.tipos,
+      });
+    },
+    async createAuditoria(data) {
+      return client.models.Auditoria.create({
+        salaId: data.salaId,
+        cerrada: data.cerrada,
+        tipos: data.tipos,
+      });
     },
   },
 });

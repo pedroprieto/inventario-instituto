@@ -1,5 +1,5 @@
 <template>
-  <AuditoriaTable @changeEvent="update" :salaId="props.sala"> </AuditoriaTable>
+  <ActivoTable @changeEvent="update"> </ActivoTable>
 </template>
 
 <script setup>
@@ -8,9 +8,9 @@ import { defineProps } from "vue";
 const props = defineProps(["sala"]);
 const store = useAppStore();
 
-await store.listAuditoriasBySalaId(props.sala);
+await store.listActivosBySalaId(props.sala);
 
 function update() {
-  store.listAuditoriasBySalaId(props.sala);
+  store.listActivosBySalaId(props.sala);
 }
 </script>

@@ -8,6 +8,7 @@ const schema = a.schema({
       sala: a.belongsTo("Sala", "salaId"),
       tipo: a.belongsTo("Tipo", "tipoId"),
       salas: a.hasMany("ActivoSala", "activoId"),
+      auditorias: a.hasMany("ActivoAuditoria", "activoId"),
     })
     .secondaryIndexes((index) => [index("salaId"), index("tipoId")])
     .authorization((allow) => [allow.guest()]),
@@ -33,7 +34,28 @@ const schema = a.schema({
       nombre: a.string(),
       historicoActivos: a.hasMany("ActivoSala", "salaId"),
       activos: a.hasMany("Activo", "salaId"),
+      auditorias: a.hasMany("Auditoria", "salaId"),
     })
+    .authorization((allow) => [allow.guest()]),
+  Auditoria: a
+    .model({
+      salaId: a.id().required(),
+      cerrada: a.boolean(),
+      tipos: a.string().array(),
+      activos: a.hasMany("ActivoAuditoria", "auditoriaId"),
+      sala: a.belongsTo("Sala", "salaId"),
+    })
+    .secondaryIndexes((index) => [index("salaId")])
+    .authorization((allow) => [allow.guest()]),
+
+  ActivoAuditoria: a
+    .model({
+      activoId: a.id().required(),
+      auditoriaId: a.id().required(),
+      activo: a.belongsTo("Activo", "activoId"),
+      auditoria: a.belongsTo("Auditoria", "auditoriaId"),
+    })
+    .secondaryIndexes((index) => [index("auditoriaId")])
     .authorization((allow) => [allow.guest()]),
 });
 
