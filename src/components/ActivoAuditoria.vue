@@ -24,15 +24,66 @@
         <qrcode-stream @detect="onDetect"></qrcode-stream>
       </v-col>
     </v-row>
-    <ListView
-      v-if="!showForm"
-      @delete="deleteItem"
+    <v-data-table
       :headers="headers"
-      title="Activos auditados"
       :items="items"
+      :items-length="items.length"
       :loading="loading"
+      :search="search"
+      item-value="name"
     >
-    </ListView>
+      <template #top>
+        <v-toolbar flat>
+          <v-toolbar-title>Activos auditados</v-toolbar-title>
+          <v-text-field
+            v-model="search"
+            label="Buscar"
+            density="compact"
+            prepend-inner-icon="mdi-magnify"
+            single-line
+            hide-details
+            flat
+            variant="solo-filled"
+          ></v-text-field>
+
+          <slot name="busqueda"> </slot>
+          <v-spacer></v-spacer>
+
+          <slot name="anyadir"> </slot>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:item.tipos="{ item }">
+        <v-chip size="x-small" v-for="tipo in item.tipos">
+          {{ store.getNombreTipoById(tipo) }}
+        </v-chip>
+      </template>
+
+      <template v-slot:item.nuevo="{ item }">
+        <v-icon
+          v-if="item.nuevo"
+          icon="mdi-alert-circle"
+          color="warning"
+        ></v-icon>
+      </template>
+      <template v-slot:item.salaId="{ item }">
+        {{ store.getNombreSalaById(item.salaId) }}</template
+      >
+      <template v-slot:item.tipoId="{ item }">
+        {{ store.getNombreTipoById(item.tipoId) }}</template
+      >
+      <template v-slot:item.actions="{ item }">
+        <v-checkbox
+          class="d-flex justify-end"
+          v-model="item.auditado"
+          :color="item.nuevo ? 'warning' : 'primary'"
+          icon="mdi-check"
+          variant="text"
+          @change="toggleAuditoria(item)"
+        >
+        </v-checkbox>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
@@ -69,12 +120,6 @@ const headers = [
     key: "tipoId",
   },
   {
-    title: "Auditado",
-    align: "start",
-    sortable: true,
-    key: "auditado",
-  },
-  {
     title: "Nuevo",
     align: "start",
     sortable: true,
@@ -85,12 +130,10 @@ const headers = [
 
 const client = generateClient();
 let loading = ref(false);
-let showForm = ref(0);
-let isEdit = ref(false);
-let formTitle = ref("");
 let idAuditar = ref("");
 
 let enableQR = ref(false);
+let search = ref("");
 
 function onDetect(code) {
   idAuditar.value = code[0].rawValue;
@@ -101,9 +144,12 @@ function addToAuditoria() {
   emit("auditar", idAuditar.value);
 }
 
-async function deleteItem(item) {
-  console.log(item);
-  await store.deleteActivoAuditoria(item);
-  emit("changeEvent");
+async function toggleAuditoria(item) {
+  if (item.auditado) {
+    emit("auditar", item.id);
+  } else {
+    await store.deleteActivoAuditoria(item);
+    emit("changeEvent");
+  }
 }
 </script>
