@@ -1,5 +1,8 @@
 <template>
-  <SalaTable> </SalaTable>
+  <SalaTable v-if="useRoute().name == 'salas'"> </SalaTable>
+  <router-view></router-view>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRoute } from "vue-router";
+</script>

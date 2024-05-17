@@ -37,9 +37,7 @@
               color="primary"
               >Enviar</v-btn
             >
-            <v-btn class="me-4" type="button" @click="closeForm"
-              >Cancelar</v-btn
-            >
+            <v-btn type="button" @click="closeForm">Cancelar</v-btn>
           </v-form>
         </v-card-text>
       </v-container>

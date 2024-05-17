@@ -8,15 +8,7 @@
               <v-col cols="12" sm="9">
                 Sala: {{ store.currentSala.nombre }}
               </v-col>
-              <v-col cols="12" sm="3">
-                <v-select
-                  v-model="selectedSala"
-                  :items="store.salas"
-                  item-title="nombre"
-                  item-value="id"
-                  label="Sala"
-                ></v-select>
-              </v-col>
+              <v-col cols="12" sm="3"> </v-col>
             </v-row>
           </v-container>
         </v-card-title>
@@ -47,9 +39,9 @@
         </v-card-subtitle>
       </v-card-item>
       <v-card-text>
-        <v-card elevation="10">
+        <v-tabs-window>
           <router-view> </router-view>
-        </v-card>
+        </v-tabs-window>
       </v-card-text>
     </v-card>
   </v-container>
@@ -57,7 +49,7 @@
 
 <script setup>
 import { generateClient } from "aws-amplify/data";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useAppStore } from "../store/app";
 
 const store = useAppStore();
@@ -76,7 +68,7 @@ watch(selectedSala, async (newSala, oldSala) => {
   await store.setCurrentSala(newSala);
 });
 
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 
 const client = generateClient();
