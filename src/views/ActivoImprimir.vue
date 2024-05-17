@@ -73,10 +73,9 @@ const renderAs = ref("svg");
 
 <style>
 @page {
-  size: 4in 1in; /* auto is the initial value */
+  size: 4in 1in portrait; /* auto is the initial value */
   /* this affects the margin in the printer settings */
   margin: 0;
-  page-orientation: upright;
 }
 
 .grid {

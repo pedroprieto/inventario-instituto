@@ -28,7 +28,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="6" offset="3">
+            <v-col cols="12" md="6" offset-md="3">
               <qrcode-stream class="qr" @detect="onDetect"></qrcode-stream>
             </v-col>
           </v-row>
