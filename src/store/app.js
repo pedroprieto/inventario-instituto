@@ -54,8 +54,12 @@ export const useAppStore = defineStore("app", {
       this.currentItem = res.data;
     },
     async getActivo(itemId) {
-      let res = await client.models.Activo.get({ id: itemId });
-      return res.data;
+      try {
+        let res = await client.models.Activo.get({ id: itemId });
+        return res.data;
+      } catch (error) {
+        return null;
+      }
     },
     async setCurrentSala(itemId) {
       let res = await client.models.Sala.get(

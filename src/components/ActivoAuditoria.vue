@@ -1,10 +1,29 @@
 <template>
   <v-container>
-    <v-text-field label="nombre" v-model="idAuditar"></v-text-field>
-    <v-btn @click="addToAuditoria" color="primary" dark class="mb-2">
-      <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
-      Auditar
-    </v-btn>
+    <v-row>
+      <v-col>
+        <v-text-field label="Id" v-model="idAuditar"></v-text-field>
+      </v-col>
+      <v-col>
+        <v-btn @click="addToAuditoria" color="primary" dark class="mb-2">
+          <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
+          Auditar
+        </v-btn>
+      </v-col>
+      <v-col>
+        <v-switch
+          v-model="enableQR"
+          label="Escanear QR"
+          color="primary"
+          dark
+          class="mb-2"
+        >
+        </v-switch>
+      </v-col>
+      <v-col v-if="enableQR">
+        <qrcode-stream @detect="onDetect"></qrcode-stream>
+      </v-col>
+    </v-row>
     <ListView
       v-if="!showForm"
       @delete="deleteItem"
@@ -25,6 +44,8 @@ const router = useRouter();
 import { useAppStore } from "../store/app";
 const emit = defineEmits(["changeEvent", "auditar"]);
 const props = defineProps(["items"]);
+
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 
 const store = useAppStore();
 
@@ -68,6 +89,13 @@ let showForm = ref(0);
 let isEdit = ref(false);
 let formTitle = ref("");
 let idAuditar = ref("");
+
+let enableQR = ref(false);
+
+function onDetect(code) {
+  idAuditar.value = code[0].rawValue;
+  addToAuditoria();
+}
 
 function addToAuditoria() {
   emit("auditar", idAuditar.value);

@@ -50,6 +50,10 @@ update();
 
 async function addToAuditoria(idActivo) {
   let activo = await store.getActivo(idActivo);
+  if (!activo) {
+    alert("No existe en el sistema");
+    return;
+  }
   await store.createActivoAuditoria(idActivo, props.auditoria);
   await update();
   //  activosAuditados.push(activo);

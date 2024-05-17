@@ -29,23 +29,6 @@
       </div>
     </div>
   </v-container>
-
-  <!--
-  <qrcode-capture @detect="onDetect"></qrcode-capture>
-  Pedro: <v-file-input type="file" accept="image/*" capture="camera" />nuevo
-  <v-btn type="button" @click="imprimir">Imprimir</v-btn>
-
-  <div id="printable">
-    <v-card-text>
-      <qrcode-vue
-        :value="value"
-        :size="size"
-        :level="level"
-        :render-as="renderAs"
-      />
-    </v-card-text>
-  </div>
-  -->
 </template>
 
 <script setup>
@@ -54,12 +37,6 @@ import QrcodeVue from "qrcode.vue";
 import { useAppStore } from "../store/app";
 import { useRouter } from "vue-router";
 const router = useRouter();
-
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
-
-function onDetect(code) {
-  alert(code[0].rawValue);
-}
 
 const store = useAppStore();
 const props = defineProps(["activo"]);
