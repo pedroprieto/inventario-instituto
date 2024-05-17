@@ -15,6 +15,17 @@ const routes = [
     children: [
       {
         path: "",
+        name: "escanear",
+        meta: {
+          prompt: "Escanear",
+          mainMenu: true,
+        },
+        component: () =>
+          import(/* webpackChunkName: "home" */ "@/views/Escanear.vue"),
+        props: true,
+      },
+      {
+        path: "/activos",
         name: "activos",
         meta: {
           prompt: "Activos",
