@@ -2,10 +2,14 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-text-field label="Id" v-model="idAuditar"></v-text-field>
+        <v-text-field
+          label="Id"
+          v-model="idAuditar"
+          density="compact"
+        ></v-text-field>
       </v-col>
       <v-col>
-        <v-btn @click="addToAuditoria" color="primary" dark class="mb-2">
+        <v-btn @click="addToAuditoria" color="primary" dark>
           <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
           Auditar
         </v-btn>
@@ -13,6 +17,7 @@
       <v-col>
         <v-switch
           v-model="enableQR"
+          density="compact"
           label="Escanear QR"
           color="primary"
           dark
