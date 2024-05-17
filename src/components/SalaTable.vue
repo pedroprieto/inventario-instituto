@@ -10,7 +10,7 @@
       :loading="loading"
     >
       <template #anyadir>
-        <v-btn @click="showCreateSalaForm" color="primary" dark class="mb-2">
+        <v-btn @click="showCreateSalaForm" color="primary" dark>
           <v-icon size="large" class="me-2"> mdi-plus </v-icon>
           Añadir
         </v-btn>

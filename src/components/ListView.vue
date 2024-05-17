@@ -55,11 +55,26 @@
           {{ store.getNombreTipoById(item.tipoId) }}</template
         >
         <template v-slot:item.actions="{ item }">
-          <v-btn icon="mdi-pencil" variant="text" @click="editItem(item)">
+          <v-btn
+            color="primary"
+            icon="mdi-information-outline"
+            variant="text"
+            @click="visitItem(item)"
+          >
           </v-btn>
-          <v-btn icon="mdi-delete" variant="text" @click="deleteItem(item)">
+          <v-btn
+            color="secondary"
+            icon="mdi-pencil"
+            variant="text"
+            @click="editItem(item)"
+          >
           </v-btn>
-          <v-btn icon="mdi-eye" variant="text" @click="visitItem(item)">
+          <v-btn
+            color="error"
+            icon="mdi-delete"
+            variant="text"
+            @click="deleteItem(item)"
+          >
           </v-btn>
         </template>
       </v-data-table>

@@ -11,12 +11,7 @@
       :loading="loading"
     >
       <template #anyadir>
-        <v-btn
-          @click="showCreateAuditoriaForm"
-          color="primary"
-          dark
-          class="mb-2"
-        >
+        <v-btn @click="showCreateAuditoriaForm" color="primary" dark>
           <v-icon size="large" class="me-2"> mdi-plus </v-icon>
           Añadir
         </v-btn>

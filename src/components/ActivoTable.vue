@@ -11,11 +11,11 @@
       :loading="loading"
     >
       <template #anyadir>
-        <v-btn @click="showCreateActivoForm" color="primary" dark class="mb-2">
+        <v-btn @click="showCreateActivoForm" color="primary" dark>
           <v-icon size="large" class="me-2"> mdi-plus </v-icon>
           Añadir
         </v-btn>
-        <v-btn @click="showBatchActivoForm" color="primary" dark class="mb-2">
+        <v-btn @click="showBatchActivoForm" color="secondary" dark>
           <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
           Añadir batch
         </v-btn>
