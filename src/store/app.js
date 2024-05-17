@@ -11,6 +11,7 @@ export const useAppStore = defineStore("app", {
       auditorias: [],
       currentItem: null,
       currentSala: null,
+      currentAuditoria: null,
     };
   },
   actions: {
@@ -51,6 +52,10 @@ export const useAppStore = defineStore("app", {
         }
       );
       this.currentItem = res.data;
+    },
+    async getActivo(itemId) {
+      let res = await client.models.Activo.get({ id: itemId });
+      return res.data;
     },
     async setCurrentSala(itemId) {
       let res = await client.models.Sala.get(
@@ -199,6 +204,44 @@ export const useAppStore = defineStore("app", {
         salaId: data.salaId,
         cerrada: data.cerrada,
         tipos: data.tipos,
+      });
+    },
+    async setCurrentAuditoria(itemId) {
+      let res = await client.models.Auditoria.get(
+        { id: itemId },
+        {
+          /*
+          selectionSet: [
+            "id",
+            "nombre",
+            "salaId",
+            "tipoId",
+            "sala.*",
+            "tipo.*",
+            "salas.*",
+          ],
+           */
+        }
+      );
+      this.currentAuditoria = res.data;
+    },
+    async getActivosByAuditoriaId(auditoriaId) {
+      const { data: items, errors } =
+        await client.models.ActivoAuditoria.listActivoAuditoriaByAuditoriaId({
+          auditoriaId,
+        });
+      return items;
+    },
+    async createActivoAuditoria(activoId, auditoriaId) {
+      return client.models.ActivoAuditoria.create({
+        activoId,
+        auditoriaId,
+      });
+    },
+    async deleteActivoAuditoria(activoAuditoria) {
+      return client.models.ActivoAuditoria.delete({
+        activoId: activoAuditoria.id,
+        auditoriaId: activoAuditoria.auditoriaId,
       });
     },
   },

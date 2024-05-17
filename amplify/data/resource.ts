@@ -55,6 +55,7 @@ const schema = a.schema({
       activo: a.belongsTo("Activo", "activoId"),
       auditoria: a.belongsTo("Auditoria", "auditoriaId"),
     })
+    .identifier(["activoId", "auditoriaId"])
     .secondaryIndexes((index) => [index("auditoriaId")])
     .authorization((allow) => [allow.guest()]),
 });

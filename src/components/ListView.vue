@@ -36,6 +36,12 @@
           </v-chip>
         </template>
 
+        <template v-slot:item.nuevo="{ item }">
+          <v-icon v-if="item.nuevo" icon="mdi-check"></v-icon>
+        </template>
+        <template v-slot:item.auditado="{ item }">
+          <v-icon v-if="item.auditado" icon="mdi-check"></v-icon>
+        </template>
         <template v-slot:item.cerrada="{ item }">
           <v-icon v-if="item.cerrada" icon="mdi-check"></v-icon>
         </template>

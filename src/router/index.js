@@ -114,20 +114,36 @@ const routes = [
             component: () =>
               import(/* webpackChunkName: "home" */ "@/views/Auditorias.vue"),
             props: true,
-            children: [
-              {
-                path: "/salas/:sala/auditorias/:auditoria",
-                name: "auditoria",
-                meta: {
-                  prompt: "Auditoría",
-                },
-                component: () =>
-                  import(
-                    /* webpackChunkName: "home" */ "@/views/AuditoriasView.vue"
-                  ),
-                props: true,
-              },
-            ],
+          },
+        ],
+      },
+      {
+        path: "/salas/:sala/auditorias/:auditoria",
+        name: "auditoria",
+        meta: {
+          prompt: "Auditoría",
+        },
+        component: () =>
+          import(/* webpackChunkName: "home" */ "@/views/Auditoria.vue"),
+        props: true,
+        children: [
+          {
+            path: "/salas/:sala/auditorias/:auditoria/datos",
+            name: "auditoriaDatos",
+            props: true,
+            component: () =>
+              import(
+                /* webpackChunkName: "home" */ "@/views/AuditoriaDatos.vue"
+              ),
+          },
+          {
+            path: "/salas/:sala/auditorias/:auditoria/activos",
+            name: "auditoriaActivos",
+            props: true,
+            component: () =>
+              import(
+                /* webpackChunkName: "home" */ "@/views/AuditoriaActivos.vue"
+              ),
           },
         ],
       },
