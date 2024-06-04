@@ -79,6 +79,7 @@ const renderAs = ref("svg");
 }
 
 .grid {
+  margin: 10px;
   grid-template-columns: 1fr 6fr 1fr 2fr;
   display: grid;
   row-gap: 10px;
@@ -127,20 +128,13 @@ const renderAs = ref("svg");
   padding: 0;
 }
 
-.buttons {
-  grid-area: buttons;
-  justify-self: end;
-}
-
 .titulo {
   display: inline-block;
-  width: 5em;
   text-decoration: underline;
 }
 
 .valor {
   display: inline-block;
-  width: 16em;
   vertical-align: middle;
 }
 
