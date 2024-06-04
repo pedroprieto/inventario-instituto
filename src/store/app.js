@@ -5,6 +5,7 @@ const client = generateClient();
 export const useAppStore = defineStore("app", {
   state: () => {
     return {
+      drawer: null,
       activos: [],
       salas: [],
       tipos: [],
@@ -12,9 +13,13 @@ export const useAppStore = defineStore("app", {
       currentItem: null,
       currentSala: null,
       currentAuditoria: null,
+      backURL: null,
     };
   },
   actions: {
+    toggleDrawer() {
+      this.drawer = !this.drawer;
+    },
     async getSalas() {
       const { data: items, errors } = await client.models.Sala.list();
       this.salas = items;
@@ -182,6 +187,10 @@ export const useAppStore = defineStore("app", {
       let tipo = this.tipos.find((el) => el.id == tipoId);
       if (tipo) return tipo.nombre;
       return tipoId;
+    },
+    getIconoTipoById(tipoId) {
+      // TODO
+      return "desktop-classic";
     },
     async listAuditoriasBySalaId(salaId) {
       const { data: items, errors } =

@@ -3,7 +3,6 @@
     <ListView
       @delete="deleteTipo"
       @edit="showEditTipoForm"
-      :headers="headers"
       title="Tipos"
       :items="store.tipos"
       :loading="loading"
@@ -15,6 +14,10 @@
         </v-btn>
       </template>
       <template #busqueda> </template>
+
+      <template #titulo="{ nombre }">
+        {{ nombre }}
+      </template>
     </ListView>
     <TipoForm
       :formTitle="formTitle"
@@ -33,16 +36,6 @@ import { ref } from "vue";
 import { useAppStore } from "../store/app";
 
 const store = useAppStore();
-
-const headers = [
-  {
-    title: "Nombre",
-    align: "start",
-    sortable: true,
-    key: "nombre",
-  },
-  { key: "actions", title: "Acciones", sortable: false, align: "end" },
-];
 
 const client = generateClient();
 let tipoItem = ref({});

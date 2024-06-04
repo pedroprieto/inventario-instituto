@@ -1,31 +1,35 @@
 <template>
-  <v-container>
-    <ListView
-      @delete="deleteItem"
-      @edit="showEditSalaForm"
-      @visit="visitSala"
-      :headers="headers"
-      title="Salas"
-      :items="store.salas"
-      :loading="loading"
-    >
-      <template #anyadir>
-        <v-btn @click="showCreateSalaForm" color="primary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus </v-icon>
-          Añadir
-        </v-btn>
-      </template>
-      <template #busqueda> </template>
-    </ListView>
-    <SalaForm
-      :formTitle="formTitle"
-      v-if="showForm"
-      @envio="editOrCreate"
-      @close="closeForm"
-      :salaItem="salaItem"
-      :isEdit="isEdit"
-    ></SalaForm>
-  </v-container>
+  <ListView
+    @delete="deleteItem"
+    @edit="showEditSalaForm"
+    @visit="visitSala"
+    title="Salas"
+    :items="store.salas"
+    :loading="loading"
+  >
+    <template #anyadir>
+      <v-btn @click="showCreateSalaForm" color="primary" dark>
+        <v-icon size="large" class="me-2"> mdi-plus </v-icon>
+        Añadir
+      </v-btn>
+    </template>
+    <template #busqueda> </template>
+    <template #titulo="{ nombre, salaId }">
+      {{ nombre }}
+    </template>
+
+    <template #subtitulo="{ nombre, salaId }">
+      {{ store.getNombreSalaById(salaId) }}
+    </template>
+  </ListView>
+  <SalaForm
+    :formTitle="formTitle"
+    v-if="showForm"
+    @envio="editOrCreate"
+    @close="closeForm"
+    :salaItem="salaItem"
+    :isEdit="isEdit"
+  ></SalaForm>
 </template>
 
 <script setup>
@@ -36,16 +40,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const store = useAppStore();
-
-const headers = [
-  {
-    title: "Nombre",
-    align: "start",
-    sortable: true,
-    key: "nombre",
-  },
-  { key: "actions", title: "Acciones", sortable: false, align: "end" },
-];
 
 const client = generateClient();
 let salaItem = ref({});

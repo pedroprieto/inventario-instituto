@@ -38,6 +38,6 @@
     "vue-barcode-reader": "^1.0.3",
     "vue-qrcode-reader": "^5.5.4",
     "vue-router": "^4.3.2",
-    "vuetify": "^3.5.0"
+    "vuetify": "^3.6.7"
   }
 }

@@ -1,50 +1,44 @@
 <template>
-  <v-container>
-    <v-card>
-      <v-card-item>
-        <v-card-title>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="9">
-                Sala: {{ store.currentSala.nombre }}
-              </v-col>
-              <v-col cols="12" sm="3"> </v-col>
-            </v-row>
-          </v-container>
-        </v-card-title>
-        <v-card-subtitle>
-          <v-tabs color="deep-purple-accent-4" align-tabs="center">
-            <v-tab
-              :to="{
-                name: 'salaDatos',
-                params: { sala: sala },
-              }"
-              >Datos
-            </v-tab>
-            <v-tab
-              :to="{
-                name: 'salaActivos',
-                params: { sala: sala },
-              }"
-              >Activos
-            </v-tab>
-            <v-tab
-              :to="{
-                name: 'salaAuditorias',
-                params: { sala: sala },
-              }"
-              >Auditorías
-            </v-tab>
-          </v-tabs>
-        </v-card-subtitle>
-      </v-card-item>
-      <v-card-text>
-        <v-tabs-window>
-          <router-view> </router-view>
-        </v-tabs-window>
-      </v-card-text>
-    </v-card>
-  </v-container>
+  <v-card>
+    <v-card-item>
+      <v-card-title align="center">
+        <v-row>
+          <v-col cols="12" sm="9"> Sala: {{ store.currentSala.nombre }} </v-col>
+          <v-col cols="12" sm="3"> </v-col>
+        </v-row>
+      </v-card-title>
+      <v-card-subtitle>
+        <v-tabs color="deep-purple-accent-4" align-tabs="center">
+          <v-tab
+            :to="{
+              name: 'salaDatos',
+              params: { sala: sala },
+            }"
+            >Datos
+          </v-tab>
+          <v-tab
+            :to="{
+              name: 'salaActivos',
+              params: { sala: sala },
+            }"
+            >Activos
+          </v-tab>
+          <v-tab
+            :to="{
+              name: 'salaAuditorias',
+              params: { sala: sala },
+            }"
+            >Auditorías
+          </v-tab>
+        </v-tabs>
+      </v-card-subtitle>
+    </v-card-item>
+    <v-card-text>
+      <v-tabs-window>
+        <router-view> </router-view>
+      </v-tabs-window>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup>

@@ -17,7 +17,7 @@
                 :items="store.tipos"
                 item-title="nombre"
                 item-value="id"
-                label="Chips"
+                label="Tipos"
                 chips
                 multiple
               ></v-select>

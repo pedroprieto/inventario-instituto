@@ -1,41 +1,46 @@
 <template>
-  <v-container>
-    <ListView
-      v-if="!showForm"
-      @delete="deleteItem"
-      @edit="showEditActivoForm"
-      @visit="visitActivo"
-      :headers="headers"
-      title="Activos"
-      :items="store.activos"
-      :loading="loading"
-    >
-      <template #anyadir>
-        <v-btn @click="showCreateActivoForm" color="primary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus </v-icon>
-          Añadir
-        </v-btn>
-        <v-btn @click="showBatchActivoForm" color="secondary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
-          Añadir batch
-        </v-btn>
-      </template>
-    </ListView>
-    <ActivoForm
-      :formTitle="formTitle"
-      v-else-if="showForm == 1"
-      @envio="editOrCreate"
-      @close="closeForm"
-      :activoItem="store.currentItem"
-      :isEdit="isEdit"
-    ></ActivoForm>
-    <BatchActivoForm
-      formTitle="Añadir un conjunto de activos"
-      v-else
-      @envio="batchCreate"
-      @close="closeForm"
-    ></BatchActivoForm>
-  </v-container>
+  <ListView
+    v-if="!showForm"
+    @delete="deleteItem"
+    @edit="showEditActivoForm"
+    @visit="visitActivo"
+    title="Activos"
+    :items="store.activos"
+    :loading="loading"
+  >
+    <template #anyadir>
+      <v-btn @click="showCreateActivoForm" color="primary" dark>
+        <v-icon size="large" class="me-2"> mdi-plus </v-icon>
+        Añadir
+      </v-btn>
+      <v-btn @click="showBatchActivoForm" color="secondary" dark>
+        <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
+        Añadir batch
+      </v-btn>
+    </template>
+
+    <template #titulo="{ nombre, salaId }">
+      {{ nombre }}
+    </template>
+
+    <template #subtitulo="{ nombre, salaId }">
+      {{ store.getNombreSalaById(salaId) }}
+    </template>
+  </ListView>
+  <ActivoForm
+    :formTitle="formTitle"
+    v-else-if="showForm == 1"
+    @envio="editOrCreate"
+    @close="closeForm"
+    :activoItem="store.currentItem"
+    :isEdit="isEdit"
+  ></ActivoForm>
+  <BatchActivoForm
+    formTitle="Añadir un conjunto de activos"
+    v-else
+    @envio="batchCreate"
+    @close="closeForm"
+  ></BatchActivoForm>
 </template>
 
 <script setup>
@@ -47,28 +52,6 @@ import { useAppStore } from "../store/app";
 const emit = defineEmits(["changeEvent"]);
 
 const store = useAppStore();
-
-const headers = [
-  {
-    title: "Nombre",
-    align: "start",
-    sortable: true,
-    key: "nombre",
-  },
-  {
-    title: "Sala",
-    align: "start",
-    sortable: true,
-    key: "salaId",
-  },
-  {
-    title: "Tipo",
-    align: "start",
-    sortable: true,
-    key: "tipoId",
-  },
-  { key: "actions", title: "Acciones", sortable: false, align: "end" },
-];
 
 const client = generateClient();
 let loading = ref(false);

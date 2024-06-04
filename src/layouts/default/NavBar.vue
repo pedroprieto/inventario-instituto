@@ -1,14 +1,22 @@
 <template>
-  <v-container>
-    <v-breadcrumbs :items="useRoute().matched">
+  <v-navigation-drawer v-model="store.drawer">
+    <v-list>
+      <v-list-item v-for="route of mainRoutes" :to="route.path">{{
+        route.meta.prompt
+      }}</v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+  <!--    <v-breadcrumbs :items="useRoute().matched">
       <template v-slot:title="{ item }">
         <RouterLink :to="{ name: item.name, params: useRoute().params }">
           {{ item.meta.prompt }}
         </RouterLink>
       </template>
     </v-breadcrumbs>
+-->
 
-    <!--
+  <!--
     <v-select
       v-model="selectedSala"
       :items="store.salas"
@@ -17,9 +25,7 @@
       density="compact"
       variant="plain"
     ></v-select>
--->
-  </v-container>
-</template>
+--></template>
 
 <script setup>
 import { ref, computed, watch } from "vue";
@@ -29,6 +35,10 @@ const router = useRouter();
 const store = useAppStore();
 
 let selectedSala = ref("");
+
+const mainRoutes = router
+  .getRoutes()
+  .filter((route) => route.meta && route.meta.mainMenu);
 
 watch(selectedSala, async (newSala, oldSala) => {
   router.push({

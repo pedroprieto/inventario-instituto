@@ -2,12 +2,18 @@
   <v-container>
     <div class="grid">
       <div class="idTitle text-h6 text-right font-weight-light">Id:</div>
-      <div class="identifier text-h5">{{ store.currentItem.id }}</div>
+      <div class="identifier text-h6">{{ store.currentItem.id }}</div>
       <div class="buttons">
-        <v-btn icon="mdi-pencil" variant="text" @click="editItem"></v-btn>
         <v-btn
+          size="small"
+          icon="mdi-pencil"
+          color="secondary"
+          @click="editItem"
+        ></v-btn>
+        <v-btn
+          size="small"
+          color="primary"
           icon="mdi-printer"
-          variant="text"
           :to="{ name: 'activoImprimir' }"
         ></v-btn>
       </div>
@@ -21,6 +27,7 @@
       <div class="tipo text-h5">{{ store.currentItem.tipo.nombre }}</div>
       <div class="qr">
         <qrcode-vue
+          class="qrcode"
           :value="store.currentItem.id"
           :size="size"
           :level="level"
@@ -61,7 +68,8 @@ function editItem() {
   column-gap: 10px;
   align-items: center;
   grid-template-areas:
-    "idTitle identifier . buttons"
+    ". . buttons buttons"
+    "idTitle identifier identifier identifier"
     "nombreTitle nombre qr qr"
     "salaTitle sala qr qr"
     "tipoTitle tipo qr qr";
@@ -93,7 +101,14 @@ function editItem() {
 }
 .qr {
   grid-area: qr;
-  justify-self: center;
+  justify-self: right;
+}
+
+.qrcode {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .buttons {

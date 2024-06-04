@@ -1,100 +1,81 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <v-text-field
-          label="Id"
-          v-model="idAuditar"
-          density="compact"
-        ></v-text-field>
-      </v-col>
-      <v-col>
-        <v-btn @click="addToAuditoria" color="primary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
-          Auditar
-        </v-btn>
-      </v-col>
-      <v-col>
-        <v-switch
-          v-model="enableQR"
-          density="compact"
-          label="Escanear QR"
-          color="primary"
-          dark
-          class="mb-2"
-        >
-        </v-switch>
-      </v-col>
-      <v-col v-if="enableQR">
-        <qrcode-stream @detect="onDetect"></qrcode-stream>
-      </v-col>
-    </v-row>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      :items-length="items.length"
-      :loading="loading"
-      :search="search"
-      item-value="name"
+  <v-row class="text-center">
+    <v-col>
+      <v-card>
+        <v-card-item>
+          <v-row>
+            <v-col>Existentes</v-col>
+            <v-col>Nuevos</v-col>
+            <v-col>Auditados</v-col>
+          </v-row>
+          <v-row class="text-h2">
+            <v-col>{{ existentes }}</v-col>
+            <v-col>{{ nuevos }}</v-col>
+            <v-col>{{ auditados }}</v-col>
+          </v-row>
+        </v-card-item>
+      </v-card>
+    </v-col>
+  </v-row>
+
+  <v-row v-if="!store.currentAuditoria.cerrada">
+    <v-col>
+      <v-text-field
+        label="Id"
+        append-icon="mdi-send"
+        @click:append="addToAuditoria"
+        v-model="idAuditar"
+        density="compact"
+      ></v-text-field>
+    </v-col>
+  </v-row>
+  <v-row align="center" v-if="!store.currentAuditoria.cerrada">
+    <v-col>
+      <v-switch
+        v-model="enableQR"
+        density="compact"
+        label="Escanear QR"
+        color="primary"
+        dark
+        class="mb-2"
+      >
+      </v-switch>
+    </v-col>
+    <v-col v-if="enableQR">
+      <qrcode-stream @detect="onDetect"></qrcode-stream>
+    </v-col>
+  </v-row>
+
+  <v-row v-if="!store.currentAuditoria.cerrada">
+    <v-col>
+      <v-divider></v-divider>
+    </v-col>
+  </v-row>
+
+  <v-list>
+    <v-list-item
+      :base-color="colorItem(item)"
+      v-for="item in items"
+      :key="item.id"
+      :value="item.id"
+      @click="toggleAuditoria(item)"
+      :disabled="store.currentAuditoria.cerrada"
     >
-      <template #top>
-        <v-toolbar flat>
-          <v-toolbar-title>Activos auditados</v-toolbar-title>
-          <v-text-field
-            v-model="search"
-            label="Buscar"
-            density="compact"
-            prepend-inner-icon="mdi-magnify"
-            single-line
-            hide-details
-            flat
-            variant="solo-filled"
-          ></v-text-field>
+      <v-list-item-title>
+        {{ item.nombre }}
+      </v-list-item-title>
 
-          <slot name="busqueda"> </slot>
-          <v-spacer></v-spacer>
-
-          <slot name="anyadir"> </slot>
-        </v-toolbar>
-      </template>
-
-      <template v-slot:item.tipos="{ item }">
-        <v-chip size="x-small" v-for="tipo in item.tipos">
-          {{ store.getNombreTipoById(tipo) }}
-        </v-chip>
-      </template>
-
-      <template v-slot:item.nuevo="{ item }">
-        <v-icon
-          v-if="item.nuevo"
-          icon="mdi-alert-circle"
-          color="warning"
-        ></v-icon>
-      </template>
-      <template v-slot:item.salaId="{ item }">
-        {{ store.getNombreSalaById(item.salaId) }}</template
-      >
-      <template v-slot:item.tipoId="{ item }">
-        {{ store.getNombreTipoById(item.tipoId) }}</template
-      >
-      <template v-slot:item.actions="{ item }">
-        <v-checkbox
-          class="d-flex justify-end"
-          v-model="item.auditado"
-          :color="item.nuevo ? 'warning' : 'primary'"
-          icon="mdi-check"
-          variant="text"
-          @change="toggleAuditoria(item)"
-        >
+      <template v-slot:append>
+        <v-checkbox v-model="item.auditado" icon="mdi-check" variant="text">
         </v-checkbox>
       </template>
-    </v-data-table>
-  </v-container>
+    </v-list-item>
+  </v-list>
 </template>
 
 <script setup>
 import { generateClient } from "aws-amplify/data";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 import { useAppStore } from "../store/app";
@@ -105,40 +86,24 @@ import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
 
 const store = useAppStore();
 
-const headers = [
-  {
-    title: "Nombre",
-    align: "start",
-    sortable: true,
-    key: "nombre",
-  },
-  {
-    title: "Sala",
-    align: "start",
-    sortable: true,
-    key: "salaId",
-  },
-  {
-    title: "Tipo",
-    align: "start",
-    sortable: true,
-    key: "tipoId",
-  },
-  {
-    title: "Nuevo",
-    align: "start",
-    sortable: true,
-    key: "nuevo",
-  },
-  { key: "actions", title: "Acciones", sortable: false, align: "end" },
-];
-
 const client = generateClient();
 let loading = ref(false);
 let idAuditar = ref("");
 
 let enableQR = ref(false);
 let search = ref("");
+
+const auditados = computed(() => {
+  return props.items.filter((el) => el.auditado).length;
+});
+
+const existentes = computed(() => {
+  return props.items.filter((el) => !el.nuevo).length;
+});
+
+const nuevos = computed(() => {
+  return props.items.filter((el) => el.nuevo).length;
+});
 
 function onDetect(code) {
   idAuditar.value = code[0].rawValue;
@@ -149,8 +114,14 @@ function addToAuditoria() {
   emit("auditar", idAuditar.value);
 }
 
+function colorItem(item) {
+  if (item.nuevo) return "warning";
+  if (item.auditado) return "primary";
+  return "";
+}
+
 async function toggleAuditoria(item) {
-  if (item.auditado) {
+  if (!item.auditado) {
     emit("auditar", item.id);
   } else {
     await store.deleteActivoAuditoria(item);

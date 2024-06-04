@@ -1,31 +1,41 @@
 <template>
-  <v-container>
-    <ListView
-      v-if="!showForm"
-      @delete="deleteItem"
-      @edit="showEditAuditoriaForm"
-      @visit="visitAuditoria"
-      :headers="headers"
-      title="Auditorias"
-      :items="store.auditorias"
-      :loading="loading"
-    >
-      <template #anyadir>
-        <v-btn @click="showCreateAuditoriaForm" color="primary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus </v-icon>
-          Añadir
-        </v-btn>
-      </template>
-    </ListView>
-    <AuditoriaForm
-      :formTitle="formTitle"
-      v-else
-      @envio="editOrCreate"
-      @close="closeForm"
-      :auditoriaItem="auditoriaItem"
-      :isEdit="isEdit"
-    ></AuditoriaForm>
-  </v-container>
+  <ListView
+    v-if="!showForm"
+    @delete="deleteItem"
+    @edit="showEditAuditoriaForm"
+    @visit="visitAuditoria"
+    title="Auditorias"
+    :items="store.auditorias"
+    :loading="loading"
+  >
+    <template #anyadir>
+      <v-btn @click="showCreateAuditoriaForm" color="primary" dark>
+        <v-icon size="large" class="me-2"> mdi-plus </v-icon>
+        Añadir
+      </v-btn>
+    </template>
+
+    <template #titulo="item">
+      {{ new Date(item.createdAt).toLocaleString() }}
+    </template>
+
+    <template #subtitulo="{ nombre, tipos, nuevo, auditado, cerrada }">
+      <v-chip size="x-small" v-for="tipo in tipos">
+        {{ store.getNombreTipoById(tipo) }}
+      </v-chip>
+      <v-icon v-if="nuevo" icon="mdi-check"></v-icon>
+      <v-icon v-if="auditado" icon="mdi-check"></v-icon>
+      <v-icon v-if="cerrada" icon="mdi-check"></v-icon>
+    </template>
+  </ListView>
+  <AuditoriaForm
+    :formTitle="formTitle"
+    v-else
+    @envio="editOrCreate"
+    @close="closeForm"
+    :auditoriaItem="auditoriaItem"
+    :isEdit="isEdit"
+  ></AuditoriaForm>
 </template>
 
 <script setup>
@@ -39,28 +49,6 @@ import { defineProps } from "vue";
 const props = defineProps(["salaId"]);
 
 const store = useAppStore();
-
-const headers = [
-  {
-    title: "Fecha creación",
-    align: "start",
-    sortable: true,
-    key: "createdAt",
-  },
-  {
-    title: "Tipos",
-    align: "start",
-    sortable: true,
-    key: "tipos",
-  },
-  {
-    title: "Finalizada",
-    align: "start",
-    sortable: true,
-    key: "cerrada",
-  },
-  { key: "actions", title: "Acciones", sortable: false, align: "end" },
-];
 
 const client = generateClient();
 let auditoriaItem = ref({});
@@ -86,7 +74,7 @@ function showEditAuditoriaForm(item) {
 
 function visitAuditoria(item) {
   router.push({
-    name: "auditoriaDatos",
+    name: "auditoria",
     params: { auditoria: item.id },
   });
 }

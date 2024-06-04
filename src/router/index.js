@@ -166,32 +166,6 @@ const routes = [
                     /* webpackChunkName: "home" */ "@/views/Auditoria.vue"
                   ),
                 props: true,
-                children: [
-                  {
-                    path: "/salas/:sala/auditorias/:auditoria",
-                    name: "auditoriaDatos",
-                    props: true,
-                    meta: {
-                      prompt: "Datos auditoría",
-                    },
-                    component: () =>
-                      import(
-                        /* webpackChunkName: "home" */ "@/views/AuditoriaDatos.vue"
-                      ),
-                  },
-                  {
-                    path: "/salas/:sala/auditorias/:auditoria/activos",
-                    name: "auditoriaActivos",
-                    props: true,
-                    meta: {
-                      prompt: "Activos auditoría",
-                    },
-                    component: () =>
-                      import(
-                        /* webpackChunkName: "home" */ "@/views/AuditoriaActivos.vue"
-                      ),
-                  },
-                ],
               },
             ],
           },

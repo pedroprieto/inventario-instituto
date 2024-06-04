@@ -1,95 +1,72 @@
 <template>
-  <v-container>
-    <v-card>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :items-length="items.length"
-        :loading="loading"
-        :search="search"
-        item-value="name"
-      >
-        <template #top>
-          <v-toolbar flat>
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
-            <v-text-field
-              v-model="search"
-              label="Buscar"
-              density="compact"
-              prepend-inner-icon="mdi-magnify"
-              single-line
-              hide-details
-              flat
-              variant="solo-filled"
-            ></v-text-field>
+  <v-toolbar flat>
+    <v-toolbar-title>{{ title }}</v-toolbar-title>
+    <v-text-field
+      v-model="search"
+      label="Buscar"
+      density="compact"
+      prepend-inner-icon="mdi-magnify"
+      single-line
+      hide-details
+      flat
+      variant="solo-filled"
+    ></v-text-field>
+  </v-toolbar>
+  <v-toolbar flat>
+    <slot name="anyadir"> </slot>
+  </v-toolbar>
+  <v-list lines="two" v-if="!showForm">
+    <v-list-item
+      v-for="item in items"
+      :key="item.id"
+      :value="item.id"
+      @click="visitItem(item)"
+    >
+      <v-list-item-title>
+        <slot name="titulo" v-bind="item"> </slot>
+      </v-list-item-title>
+      <v-list-item-subtitle>
+        <slot name="subtitulo" v-bind="item"> </slot>
+      </v-list-item-subtitle>
 
-            <slot name="busqueda"> </slot>
-            <v-spacer></v-spacer>
-
-            <slot name="anyadir"> </slot>
-          </v-toolbar>
-        </template>
-
-        <template v-slot:item.tipos="{ item }">
-          <v-chip size="x-small" v-for="tipo in item.tipos">
-            {{ store.getNombreTipoById(tipo) }}
-          </v-chip>
-        </template>
-
-        <template v-slot:item.nuevo="{ item }">
-          <v-icon v-if="item.nuevo" icon="mdi-check"></v-icon>
-        </template>
-        <template v-slot:item.auditado="{ item }">
-          <v-icon v-if="item.auditado" icon="mdi-check"></v-icon>
-        </template>
-        <template v-slot:item.cerrada="{ item }">
-          <v-icon v-if="item.cerrada" icon="mdi-check"></v-icon>
-        </template>
-        <template v-slot:item.createdAt="{ item }">
-          {{ new Date(item.createdAt).toLocaleString() }}</template
-        >
-        <template v-slot:item.salaId="{ item }">
-          {{ store.getNombreSalaById(item.salaId) }}</template
-        >
-        <template v-slot:item.tipoId="{ item }">
-          {{ store.getNombreTipoById(item.tipoId) }}</template
-        >
-        <template v-slot:item.actions="{ item }">
-          <v-btn
-            color="primary"
-            icon="mdi-information-outline"
-            variant="text"
-            @click="visitItem(item)"
+      <template v-slot:prepend>
+        <v-avatar color="grey-lighten-1">
+          <v-icon color="white"
+            >mdi-{{ store.getIconoTipoById(item.tipoId) }}</v-icon
           >
-          </v-btn>
-          <v-btn
-            color="secondary"
-            icon="mdi-pencil"
-            variant="text"
-            @click="editItem(item)"
-          >
-          </v-btn>
-          <v-btn
-            color="error"
-            icon="mdi-delete"
-            variant="text"
-            @click="deleteItem(item)"
-          >
-          </v-btn>
-        </template>
-      </v-data-table>
-    </v-card>
-    <DialogDelete
-      @close="close"
-      @accept="deleteItemConfirm"
-      v-model="dialogDelete"
-    ></DialogDelete>
-  </v-container>
+        </v-avatar>
+      </template>
+      <template v-slot:append>
+        <!--
+        <v-btn
+          color="secondary"
+          icon="mdi-pencil"
+          variant="text"
+          @click="editItem(item)"
+        >
+        </v-btn>
+-->
+        <v-btn
+          color="error"
+          icon="mdi-delete"
+          variant="text"
+          @click="deleteItem(item)"
+        >
+        </v-btn>
+      </template>
+    </v-list-item>
+  </v-list>
+
+  <DialogDelete
+    @close="close"
+    @accept="deleteItemConfirm"
+    v-model="dialogDelete"
+  ></DialogDelete>
 </template>
 
 <script setup>
 import { ref, nextTick } from "vue";
-const props = defineProps(["title", "items", "headers", "loading"]);
+const props = defineProps(["title", "items", "loading"]);
 const emit = defineEmits(["delete", "edit", "visit"]);
 let dialogDelete = ref(false);
 
