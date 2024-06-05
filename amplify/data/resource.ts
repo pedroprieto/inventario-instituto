@@ -9,6 +9,7 @@ const schema = a.schema({
       tipo: a.belongsTo("Tipo", "tipoId"),
       salas: a.hasMany("ActivoSala", "activoId"),
       auditorias: a.hasMany("ActivoAuditoria", "activoId"),
+      numeroSerie: a.string(),
     })
     .secondaryIndexes((index) => [index("salaId"), index("tipoId")])
     .authorization((allow) => [allow.guest()]),
@@ -17,6 +18,7 @@ const schema = a.schema({
     .model({
       nombre: a.string(),
       activos: a.hasMany("Activo", "tipoId"),
+      icono: a.string(),
     })
     .authorization((allow) => [allow.guest()]),
 

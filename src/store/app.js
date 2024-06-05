@@ -35,6 +35,7 @@ export const useAppStore = defineStore("app", {
         nombre: item.nombre,
         salaId: item.salaId,
         tipoId: item.tipoId,
+        numeroSerie: item.numeroSerie,
       });
       await client.models.ActivoSala.create({
         activoId: item.id,
@@ -124,6 +125,7 @@ export const useAppStore = defineStore("app", {
         nombre: data.nombre,
         salaId: data.salaId,
         tipoId: data.tipoId,
+        numeroSerie: data.numeroSerie,
       }).then((el) => {
         // el.data.id: nuevo elemento creado
         return client.models.ActivoSala.create({
@@ -189,8 +191,9 @@ export const useAppStore = defineStore("app", {
       return tipoId;
     },
     getIconoTipoById(tipoId) {
-      // TODO
-      return "desktop-classic";
+      let tipo = this.tipos.find((el) => el.id == tipoId);
+      if (tipo) return tipo.icono;
+      return tipoId;
     },
     async listAuditoriasBySalaId(salaId) {
       const { data: items, errors } =

@@ -2,7 +2,7 @@
   <v-container>
     <ListView
       @delete="deleteTipo"
-      @edit="showEditTipoForm"
+      @visit="showEditTipoForm"
       title="Tipos"
       :items="store.tipos"
       :loading="loading"
@@ -17,6 +17,12 @@
 
       <template #titulo="{ nombre }">
         {{ nombre }}
+      </template>
+
+      <template #avatar="{ icono }">
+        <v-avatar color="grey-lighten-1">
+          <v-icon color="white">mdi-{{ icono }}</v-icon>
+        </v-avatar>
       </template>
     </ListView>
     <TipoForm
@@ -57,6 +63,7 @@ async function updateTipo(item) {
   return client.models.Tipo.update({
     id: item.id,
     nombre: item.nombre,
+    icono: item.icono,
   });
 }
 
@@ -93,6 +100,7 @@ function closeForm() {
 async function createTipo(data) {
   return client.models.Tipo.create({
     nombre: data.nombre,
+    icono: item.icono,
   });
 }
 </script>

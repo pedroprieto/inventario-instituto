@@ -12,6 +12,10 @@
                 label="nombre"
                 v-model="tipoData.nombre"
               ></v-text-field>
+              <v-text-field
+                label="icono"
+                v-model="tipoData.icono"
+              ></v-text-field>
               <v-btn
                 :disabled="disabled"
                 class="me-4"

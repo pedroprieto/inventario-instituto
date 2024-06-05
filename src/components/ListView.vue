@@ -30,22 +30,9 @@
       </v-list-item-subtitle>
 
       <template v-slot:prepend>
-        <v-avatar color="grey-lighten-1">
-          <v-icon color="white"
-            >mdi-{{ store.getIconoTipoById(item.tipoId) }}</v-icon
-          >
-        </v-avatar>
+        <slot name="avatar" v-bind="item"> </slot>
       </template>
       <template v-slot:append>
-        <!--
-        <v-btn
-          color="secondary"
-          icon="mdi-pencil"
-          variant="text"
-          @click="editItem(item)"
-        >
-        </v-btn>
--->
         <v-btn
           color="error"
           icon="mdi-delete"

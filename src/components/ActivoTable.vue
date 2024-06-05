@@ -26,6 +26,12 @@
     <template #subtitulo="{ nombre, salaId }">
       {{ store.getNombreSalaById(salaId) }}
     </template>
+
+    <template #avatar="{ tipoId }">
+      <v-avatar color="grey-lighten-1">
+        <v-icon color="white">mdi-{{ store.getIconoTipoById(tipoId) }}</v-icon>
+      </v-avatar>
+    </template>
   </ListView>
   <ActivoForm
     :formTitle="formTitle"
