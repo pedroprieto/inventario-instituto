@@ -29,7 +29,19 @@
             <v-text-field
               label="Número de serie"
               v-model="activoData.numeroSerie"
-            ></v-text-field>
+            >
+              <template v-slot:append>
+                <label for="qr-capture-button">
+                  <v-icon icon="mdi-qrcode-scan" />
+                </label>
+                <qrcode-capture
+                  id="qr-capture-button"
+                  style="display: none"
+                  :formats="codeFormats"
+                  @detect="onDetect"
+                ></qrcode-capture>
+              </template>
+            </v-text-field>
             <v-btn
               :disabled="disabled"
               class="me-4"
@@ -49,12 +61,26 @@
 import { ref } from "vue";
 import { useAppStore } from "../store/app";
 
+import { QrcodeCapture } from "vue-qrcode-reader";
+
+let codeFormats = ref(["qr_code", "linear_codes"]);
+
 const store = useAppStore();
 const emit = defineEmits(["envio", "close"]);
 const props = defineProps(["formTitle", "activoItem", "isEdit"]);
 let disabled = ref(false);
 let activoData = ref(Object.assign({}, props.activoItem));
 let mostrar = ref(true);
+
+function onDetect(codes) {
+  let codeDetected = codes[0].rawValue;
+  // Código conselleria
+  const urlConselleria = "inventaritic.edu.gva.es";
+  const sepConselleria = "ns=";
+  if (codeDetected.includes(urlConselleria))
+    codeDetected = codeDetected.split(sepConselleria)[1] || "";
+  activoData.value.numeroSerie = codeDetected;
+}
 
 function enviar() {
   disabled.value = true;
