@@ -1,28 +1,3 @@
-<script setup>
-import { useRouter } from "vue-router";
-import { ref } from "vue";
-import { useAppStore } from "@/store/app";
-
-const store = useAppStore();
-const router = useRouter();
-
-// const drawer = ref(false);
-
-function uploadData(event) {
-  const reader = new FileReader();
-  reader.readAsText(event.target.files[0]);
-  reader.addEventListener(
-    "load",
-    () => {
-      //store.restoreData(reader.result);
-      alert("Archivo subido correctamente. Se recargará la página");
-      location.reload();
-    },
-    false
-  );
-}
-</script>
-
 <template>
   <!-- <v-app-bar :elevation="2"> -->
   <!--   <v-app-bar-nav-icon -->
@@ -44,14 +19,11 @@ function uploadData(event) {
   <!--   </v-list> -->
   <!-- </v-navigation-drawer> -->
   <v-app-bar>
-    <v-btn
-      icon
-      title="Restaurar copia de seguridad"
-      v-if="store.backURL"
-      :to="store.backURL"
-    >
-      <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
+    <template v-slot:prepend>
+      <v-btn icon title="Volver" v-if="store.backURL" :to="store.backURL">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+    </template>
     <!--
     <v-toolbar-title>
       <v-icon icon="mdi-file-document-multiple-outline" />
@@ -67,3 +39,9 @@ function uploadData(event) {
     </v-app-bar-nav-icon>
   </v-app-bar>
 </template>
+
+<script setup>
+import { useAppStore } from "@/store/app";
+
+const store = useAppStore();
+</script>

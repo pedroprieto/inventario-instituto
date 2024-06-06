@@ -1,7 +1,7 @@
 <template>
   <ActivoTable v-if="useRoute().name == 'activos'" @changeEvent="update">
   </ActivoTable>
-  <router-view></router-view>
+  <router-view v-else></router-view>
 </template>
 
 <script setup>

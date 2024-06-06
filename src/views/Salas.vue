@@ -1,6 +1,6 @@
 <template>
   <SalaTable v-if="useRoute().name == 'salas'"> </SalaTable>
-  <router-view></router-view>
+  <router-view v-else></router-view>
 </template>
 
 <script setup>

@@ -15,7 +15,7 @@
   <v-toolbar flat>
     <slot name="anyadir"> </slot>
   </v-toolbar>
-  <v-list lines="two" v-if="!showForm">
+  <v-list lines="two">
     <v-list-item
       v-for="item in items"
       :key="item.id"
