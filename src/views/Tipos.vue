@@ -1,39 +1,37 @@
 <template>
-  <v-container>
-    <ListView
-      @delete="deleteTipo"
-      @visit="showEditTipoForm"
-      title="Tipos"
-      :items="store.tipos"
-      :loading="loading"
-    >
-      <template #anyadir>
-        <v-btn @click="showCreateTipoForm" color="primary" dark>
-          <v-icon size="large" class="me-2"> mdi-plus </v-icon>
-          Añadir
-        </v-btn>
-      </template>
-      <template #busqueda> </template>
+  <ListView
+    @delete="deleteTipo"
+    @visit="showEditTipoForm"
+    title="Tipos"
+    :items="store.tipos"
+    :loading="loading"
+  >
+    <template #anyadir>
+      <v-btn @click="showCreateTipoForm" color="primary" dark>
+        <v-icon size="large" class="me-2"> mdi-plus </v-icon>
+        Añadir
+      </v-btn>
+    </template>
+    <template #busqueda> </template>
 
-      <template #titulo="{ nombre }">
-        {{ nombre }}
-      </template>
+    <template #titulo="{ nombre }">
+      {{ nombre }}
+    </template>
 
-      <template #avatar="{ icono }">
-        <v-avatar color="grey-lighten-1">
-          <v-icon color="white">mdi-{{ icono }}</v-icon>
-        </v-avatar>
-      </template>
-    </ListView>
-    <TipoForm
-      :formTitle="formTitle"
-      v-if="showForm"
-      @envio="editOrCreate"
-      @close="closeForm"
-      :tipoItem="tipoItem"
-      :isEdit="isEdit"
-    ></TipoForm>
-  </v-container>
+    <template #avatar="{ icono }">
+      <v-avatar color="grey-lighten-1">
+        <v-icon color="white">mdi-{{ icono }}</v-icon>
+      </v-avatar>
+    </template>
+  </ListView>
+  <TipoForm
+    :formTitle="formTitle"
+    v-if="showForm"
+    @envio="editOrCreate"
+    @close="closeForm"
+    :tipoItem="tipoItem"
+    :isEdit="isEdit"
+  ></TipoForm>
 </template>
 
 <script setup>
