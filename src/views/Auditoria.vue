@@ -97,13 +97,17 @@ async function update() {
 
   let activosAuditados = await store.getActivosByAuditoriaId(props.auditoria);
 
-  let its = store.activos.map((el) => {
-    let newEl = el;
-    newEl.auditado = false;
-    newEl.nuevo = false;
-    newEl.auditoriaId = props.auditoria;
-    return newEl;
-  });
+  let its = store.activos
+    .filter((el) => {
+      return store.currentAuditoria.tipos.includes(el.tipoId);
+    })
+    .map((el) => {
+      let newEl = el;
+      newEl.auditado = false;
+      newEl.nuevo = false;
+      newEl.auditoriaId = props.auditoria;
+      return newEl;
+    });
 
   for (let item of activosAuditados) {
     let el2 = its.find((el) => el.id == item.activoId);

@@ -212,14 +212,14 @@ export const useAppStore = defineStore("app", {
         id: item.id,
         salaId: item.salaId,
         cerrada: item.cerrada,
-        tipos: item.tipos,
+        tipos: item.tipos || [],
       });
     },
     async createAuditoria(data) {
       return client.models.Auditoria.create({
         salaId: data.salaId,
         cerrada: data.cerrada,
-        tipos: data.tipos,
+        tipos: data.tipos || [],
       });
     },
     async setCurrentAuditoria(itemId) {
