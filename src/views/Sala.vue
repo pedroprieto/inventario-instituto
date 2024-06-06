@@ -3,19 +3,14 @@
     <v-card-item>
       <v-card-title align="center">
         <v-row>
-          <v-col cols="12" sm="9"> Sala: {{ store.currentSala.nombre }} </v-col>
-          <v-col cols="12" sm="3"> </v-col>
+          <v-col cols="11"> Sala: {{ store.currentSala.nombre }} </v-col>
+          <v-col cols="1">
+            <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
+          </v-col>
         </v-row>
       </v-card-title>
       <v-card-subtitle>
         <v-tabs color="deep-purple-accent-4" align-tabs="center">
-          <v-tab
-            :to="{
-              name: 'salaDatos',
-              params: { sala: sala },
-            }"
-            >Datos
-          </v-tab>
           <v-tab
             :to="{
               name: 'salaActivos',
@@ -39,6 +34,15 @@
       </v-tabs-window>
     </v-card-text>
   </v-card>
+
+  <SalaForm
+    v-if="showForm"
+    :formTitle="store.currentSala.id"
+    @envio="updateSala"
+    @close="closeForm"
+    :salaItem="store.currentSala"
+    :isEdit="true"
+  ></SalaForm>
 </template>
 
 <script setup>
@@ -71,5 +75,22 @@ function volverLista() {
   router.push({
     name: "salas",
   });
+}
+
+let showForm = ref(false);
+
+function editSala() {
+  showForm.value = true;
+}
+
+function closeForm() {
+  showForm.value = false;
+}
+
+async function updateSala(item) {
+  await store.updateSala(item);
+  closeForm();
+  await store.setCurrentSala(item.id);
+  await store.getSalas();
 }
 </script>

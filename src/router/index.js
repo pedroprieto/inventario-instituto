@@ -123,18 +123,6 @@ const routes = [
             props: true,
             children: [
               {
-                path: "/salas/:sala",
-                name: "salaDatos",
-                meta: {
-                  prompt: "Datos",
-                },
-                props: true,
-                component: () =>
-                  import(
-                    /* webpackChunkName: "home" */ "@/views/SalaDatos.vue"
-                  ),
-              },
-              {
                 path: "/salas/:sala/activos",
                 name: "salaActivos",
                 meta: {

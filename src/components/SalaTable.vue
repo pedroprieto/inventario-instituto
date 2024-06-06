@@ -64,7 +64,7 @@ function showEditSalaForm(item) {
 
 function visitSala(item) {
   router.push({
-    name: "salaDatos",
+    name: "salaActivos",
     params: { sala: item.id },
   });
 }
