@@ -8,6 +8,7 @@
       prepend-inner-icon="mdi-magnify"
       single-line
       hide-details
+      clearable
       flat
       variant="solo-filled"
     ></v-text-field>

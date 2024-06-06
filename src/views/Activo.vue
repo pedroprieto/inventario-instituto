@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="store.currentItem">
+  <v-card flat v-if="store.currentItem">
     <v-card-item>
       <v-card-title align="center"
         >Activo: {{ store.currentItem.nombre }}</v-card-title
