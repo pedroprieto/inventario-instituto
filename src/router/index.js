@@ -16,9 +16,12 @@ const routes = [
     meta: {
       prompt: "HOME",
     },
+    redirect: (to) => {
+      return { path: "/escanear" };
+    },
     children: [
       {
-        path: "",
+        path: "/escanear",
         name: "escanear",
         meta: {
           prompt: "Escanear",
