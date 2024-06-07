@@ -1,7 +1,7 @@
 <template>
   <ListView
     v-if="!showForm"
-    @delete="deleteItem"
+    @delete="deleteItems"
     @edit="showEditAuditoriaForm"
     @visit="visitAuditoria"
     title="Auditorias"
@@ -90,8 +90,12 @@ async function editOrCreate(auditoriaData, isEdit) {
   emit("changeEvent");
 }
 
-async function deleteItem(item) {
-  await store.deleteAuditoria(item);
+async function deleteItem(items) {
+  let promises = [];
+  for (let item of items) {
+    promises.push(store.deleteAuditoria(item));
+  }
+  await Promise.all(promises);
 
   emit("changeEvent");
 }

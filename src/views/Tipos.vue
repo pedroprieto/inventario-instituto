@@ -1,6 +1,6 @@
 <template>
   <ListView
-    @delete="deleteTipo"
+    @delete="deleteTipos"
     @visit="showEditTipoForm"
     title="Tipos"
     :items="store.tipos"
@@ -48,11 +48,13 @@ let showForm = ref(false);
 let isEdit = ref(false);
 let formTitle = ref("");
 
-async function deleteTipo(item) {
+async function deleteTipos(items) {
+  let promises = [];
   loading.value = true;
-  await client.models.Tipo.delete({
-    id: item.id,
-  });
+  for (let item of items) {
+    promises.push(client.models.Tipo.delete({ id: item.id }));
+  }
+  await Promise.all(promises);
   await store.getTipos();
   loading.value = false;
 }
@@ -98,7 +100,7 @@ function closeForm() {
 async function createTipo(data) {
   return client.models.Tipo.create({
     nombre: data.nombre,
-    icono: item.icono,
+    icono: data.icono,
   });
 }
 </script>

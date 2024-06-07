@@ -3,8 +3,8 @@
     <v-card-item>
       <v-card-title align="center">
         <v-row>
-          <v-col cols="11"> Sala: {{ store.currentSala.nombre }} </v-col>
-          <v-col cols="1">
+          <v-col cols="12">
+            Sala: {{ store.currentSala.nombre }}
             <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
           </v-col>
         </v-row>

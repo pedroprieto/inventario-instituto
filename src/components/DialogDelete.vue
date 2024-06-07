@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialogDelete" max-width="500px">
     <v-card>
-      <v-card-title class="text-h5">¿Desea borrar este elemento?</v-card-title>
+      <v-card-title class="text-h5">{{ message }}</v-card-title>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue-darken-1" variant="text" @click="$emit('close')"
@@ -18,4 +18,5 @@
 <script setup>
 const dialogDelete = defineModel();
 defineEmits(["close", "accept"]);
+const props = defineProps(["message"]);
 </script>

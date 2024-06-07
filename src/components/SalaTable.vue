@@ -1,6 +1,6 @@
 <template>
   <ListView
-    @delete="deleteItem"
+    @delete="deleteItems"
     @edit="showEditSalaForm"
     @visit="visitSala"
     title="Salas"
@@ -81,9 +81,13 @@ async function editOrCreate(salaData, isEdit) {
   loading.value = false;
 }
 
-async function deleteItem(item) {
+async function deleteItems(items) {
+  let promises = [];
   loading.value = true;
-  await store.deleteSala(item);
+  for (let item of items) {
+    promises.push(store.deleteSala(item));
+  }
+  await Promise.all(promises);
   await store.getSalas();
   loading.value = false;
 }

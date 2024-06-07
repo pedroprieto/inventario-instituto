@@ -1,28 +1,42 @@
 <template>
   <v-toolbar flat>
-    <v-toolbar-title>{{ title }}</v-toolbar-title>
-    <v-text-field
-      v-model="search"
-      label="Buscar"
-      density="compact"
-      prepend-inner-icon="mdi-magnify"
-      single-line
-      hide-details
-      clearable
-      flat
-      variant="solo-filled"
-    ></v-text-field>
+    <template v-if="!selectedItems.length">
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-text-field
+        v-model="search"
+        label="Buscar"
+        density="compact"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+        clearable
+        flat
+        variant="solo-filled"
+      ></v-text-field>
+      <v-toolbar-items>
+        <slot name="anyadir"> </slot>
+      </v-toolbar-items>
+    </template>
+    <template v-else>
+      <v-btn @click="deselectAll" dark>
+        <v-icon size="large" variant="text" class="me-2">
+          mdi-arrow-left
+        </v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn @click="deleteItems" color="error" dark>
+        <v-icon size="large" class="me-2"> mdi-delete </v-icon>
+      </v-btn>
+      <slot name="selectedActions"> </slot>
+    </template>
   </v-toolbar>
-  <v-toolbar flat>
-    <slot name="anyadir"> </slot>
-  </v-toolbar>
-  <v-list lines="two">
-    <v-list-item
-      v-for="item in items"
-      :key="item.id"
-      :value="item.id"
-      @click="visitItem(item)"
-    >
+
+  <v-list
+    lines="two"
+    select-strategy="classic"
+    v-model:selected="selectedItems"
+  >
+    <v-list-item v-for="item in items" :key="item.id" :value="item">
       <v-list-item-title>
         <slot name="titulo" v-bind="item"> </slot>
       </v-list-item-title>
@@ -34,12 +48,7 @@
         <slot name="avatar" v-bind="item"> </slot>
       </template>
       <template v-slot:append>
-        <v-btn
-          color="error"
-          icon="mdi-delete"
-          variant="text"
-          @click="deleteItem(item)"
-        >
+        <v-btn icon="mdi-chevron-right" variant="text" @click="visitItem(item)">
         </v-btn>
       </template>
     </v-list-item>
@@ -47,8 +56,9 @@
 
   <DialogDelete
     @close="close"
-    @accept="deleteItemConfirm"
+    @accept="deleteItemsConfirm"
     v-model="dialogDelete"
+    :message="`¿Desea borrar ${selectedItems.length} elementos?`"
   ></DialogDelete>
 </template>
 
@@ -61,11 +71,12 @@ let dialogDelete = ref(false);
 import { useAppStore } from "../store/app";
 const store = useAppStore();
 
-let itemToDelete = ref({});
 let search = ref("");
+let selectedItems = ref([]);
 
-function deleteItemConfirm() {
-  emit("delete", itemToDelete.value);
+function deleteItemsConfirm() {
+  emit("delete", selectedItems.value);
+  deselectAll();
   close();
 }
 
@@ -77,14 +88,16 @@ function visitItem(item) {
   emit("visit", item);
 }
 
+function deselectAll() {
+  selectedItems.value = [];
+}
+
 async function close() {
   dialogDelete.value = false;
-  itemToDelete.value = null;
   await nextTick();
 }
 
-function deleteItem(item) {
-  itemToDelete.value = item;
+function deleteItems() {
   dialogDelete.value = true;
 }
 </script>

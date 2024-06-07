@@ -1,7 +1,7 @@
 <template>
   <ListView
     v-if="!showForm"
-    @delete="deleteItem"
+    @delete="deleteItems"
     @edit="showEditActivoForm"
     @visit="visitActivo"
     title="Activos"
@@ -11,11 +11,15 @@
     <template #anyadir>
       <v-btn @click="showCreateActivoForm" color="primary" dark>
         <v-icon size="large" class="me-2"> mdi-plus </v-icon>
-        Añadir
       </v-btn>
       <v-btn @click="showBatchActivoForm" color="secondary" dark>
         <v-icon size="large" class="me-2"> mdi-plus-box-multiple </v-icon>
-        Añadir batch
+      </v-btn>
+    </template>
+
+    <template #selectedActions>
+      <v-btn @click="null" color="secondary" dark>
+        <v-icon size="large" class="me-2"> mdi-printer </v-icon>
       </v-btn>
     </template>
 
@@ -27,9 +31,11 @@
       {{ store.getNombreSalaById(salaId) }}
     </template>
 
-    <template #avatar="{ tipoId }">
+    <template #avatar="item">
       <v-avatar color="grey-lighten-1">
-        <v-icon color="white">mdi-{{ store.getIconoTipoById(tipoId) }}</v-icon>
+        <v-icon color="white"
+          >mdi-{{ store.getIconoTipoById(item.tipoId) }}</v-icon
+        >
       </v-avatar>
     </template>
   </ListView>
@@ -107,8 +113,12 @@ async function batchCreate(data) {
   emit("changeEvent");
 }
 
-async function deleteItem(item) {
-  await store.deleteActivo(item);
+async function deleteItems(items) {
+  let promises = [];
+  for (let item of items) {
+    promises.push(store.deleteActivo(item));
+  }
+  await Promise.all(promises);
 
   emit("changeEvent");
 }
