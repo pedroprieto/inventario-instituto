@@ -90,7 +90,7 @@ async function editOrCreate(auditoriaData, isEdit) {
   emit("changeEvent");
 }
 
-async function deleteItem(items) {
+async function deleteItems(items) {
   let promises = [];
   for (let item of items) {
     promises.push(store.deleteAuditoria(item));
