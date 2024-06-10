@@ -17,8 +17,15 @@
       </v-btn>
     </template>
 
-    <template #selectedActions>
-      <v-btn @click="null" color="secondary" dark>
+    <template #selectedActions="{ selectedItems }">
+      <v-btn
+        :to="{
+          name: 'activoImprimir',
+          query: { activos: selectedItems.map((el) => el.id).join(',') },
+        }"
+        color="secondary"
+        dark
+      >
         <v-icon size="large" class="me-2"> mdi-printer </v-icon>
       </v-btn>
     </template>

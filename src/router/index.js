@@ -3,9 +3,9 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
   {
-    path: "/activos/:activo/datos/imprimir",
+    path: "/imprimir",
     name: "activoImprimir",
-    props: true,
+    props: (route) => ({ activos: route.query.activos }),
     component: () =>
       import(/* webpackChunkName: "home" */ "@/views/ActivoImprimir.vue"),
   },

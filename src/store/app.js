@@ -61,7 +61,20 @@ export const useAppStore = defineStore("app", {
     },
     async getActivo(itemId) {
       try {
-        let res = await client.models.Activo.get({ id: itemId });
+        let res = await client.models.Activo.get(
+          { id: itemId },
+          {
+            selectionSet: [
+              "id",
+              "nombre",
+              "salaId",
+              "tipoId",
+              "sala.*",
+              "tipo.*",
+              "salas.*",
+            ],
+          }
+        );
         return res.data;
       } catch (error) {
         return null;

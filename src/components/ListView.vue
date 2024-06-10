@@ -27,7 +27,7 @@
       <v-btn @click="deleteItems" color="error" dark>
         <v-icon size="large" class="me-2"> mdi-delete </v-icon>
       </v-btn>
-      <slot name="selectedActions"> </slot>
+      <slot name="selectedActions" :selectedItems="selectedItems"> </slot>
     </template>
   </v-toolbar>
 

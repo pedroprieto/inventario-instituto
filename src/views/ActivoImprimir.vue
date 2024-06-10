@@ -1,23 +1,23 @@
 <template>
-  <div class="grid">
+  <div class="grid" v-for="activo in activoList">
     <div class="titulo idTitle text-h6 text-right font-weight-light">Id:</div>
-    <div class="valor identifier text-h5">{{ store.currentItem.id }}</div>
+    <div class="valor identifier text-h5">{{ activo.id }}</div>
     <div class="titulo nombreTitle text-h6 text-right font-weight-light">
       Nombre:
     </div>
-    <div class="valor nombre text-h5">{{ store.currentItem.nombre }}</div>
+    <div class="valor nombre text-h5">{{ activo.nombre }}</div>
     <div class="titulo salaTitle text-h6 text-right font-weight-light">
       Sala:
     </div>
-    <div class="valor sala text-h5">{{ store.currentItem.sala.nombre }}</div>
+    <div class="valor sala text-h5">{{ activo.sala.nombre }}</div>
     <div class="titulo tipoTitle text-h6 text-right font-weight-light">
       Tipo:
     </div>
-    <div class="valor tipo text-h5">{{ store.currentItem.tipo.nombre }}</div>
+    <div class="valor tipo text-h5">{{ activo.tipo.nombre }}</div>
     <div class="qr">
       <qrcode-vue
         class="qrcode"
-        :value="store.currentItem.id"
+        :value="activo.id"
         :size="size"
         :level="level"
         :render-as="renderAs"
@@ -64,11 +64,18 @@ function back() {
 }
 
 const store = useAppStore();
-const props = defineProps(["activo"]);
+const props = defineProps(["activos"]);
 
 const level = ref("M");
 const size = ref(100);
 const renderAs = ref("svg");
+
+let activoListId = ref(props.activos.split(","));
+let activoList = ref([]);
+
+for (let activoId of activoListId.value) {
+  activoList.value.push(await store.getActivo(activoId));
+}
 </script>
 
 <style>

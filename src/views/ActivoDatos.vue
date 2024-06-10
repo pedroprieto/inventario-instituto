@@ -14,7 +14,7 @@
           size="small"
           color="primary"
           icon="mdi-printer"
-          :to="{ name: 'activoImprimir' }"
+          :to="{ name: 'activoImprimir', query: { activos: props.activo } }"
         ></v-btn>
       </div>
       <div class="nombreTitle text-h6 text-right font-weight-light">
