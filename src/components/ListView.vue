@@ -24,7 +24,7 @@
         </v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click="deleteItems" color="error" dark>
+      <v-btn v-if="canDelete" @click="deleteItems" color="error" dark>
         <v-icon size="large" class="me-2"> mdi-delete </v-icon>
       </v-btn>
       <slot name="selectedActions" :selectedItems="selectedItems"> </slot>
@@ -36,7 +36,11 @@
     select-strategy="classic"
     v-model:selected="selectedItems"
   >
-    <v-list-item v-for="item in filteredItems" :key="item.id" :value="item">
+    <v-list-item
+      v-for="item in filteredItems"
+      :key="item.id"
+      :value="canSelect ? item : null"
+    >
       <v-list-item-title>
         <slot name="titulo" v-bind="item"> </slot>
       </v-list-item-title>
@@ -64,7 +68,13 @@
 
 <script setup>
 import { ref, nextTick, computed } from "vue";
-const props = defineProps(["title", "items", "loading"]);
+const props = defineProps([
+  "title",
+  "items",
+  "loading",
+  "canDelete",
+  "canSelect",
+]);
 const emit = defineEmits(["delete", "edit", "visit"]);
 let dialogDelete = ref(false);
 

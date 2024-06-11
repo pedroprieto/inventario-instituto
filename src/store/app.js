@@ -5,6 +5,8 @@ const client = generateClient();
 export const useAppStore = defineStore("app", {
   state: () => {
     return {
+      user: null,
+      isAdmin: false,
       drawer: null,
       activos: [],
       salas: [],

@@ -1,7 +1,13 @@
 <template>
   <v-app>
     <v-main>
-      <router-view />
+      <authenticator>
+        <template v-slot="{ user, signOut }">
+          <h1>Hello {{ user.username }}!</h1>
+          <button @click="signOut">Sign Out</button>
+          <router-view />
+        </template>
+      </authenticator>
     </v-main>
 
     <!-- <AppFooter />
@@ -10,9 +16,6 @@
 </template>
 
 <script setup>
-import { useAppStore } from "./store/app";
-
-const store = useAppStore();
-store.getSalas();
-store.getTipos();
+import { Authenticator } from "@aws-amplify/ui-vue";
+import "@aws-amplify/ui-vue/styles.css";
 </script>

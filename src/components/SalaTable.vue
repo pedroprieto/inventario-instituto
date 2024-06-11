@@ -6,6 +6,8 @@
     title="Salas"
     :items="store.salas"
     :loading="loading"
+    :canDelete="store.isAdmin"
+    :canSelect="store.isAdmin"
   >
     <template #anyadir>
       <v-btn @click="showCreateSalaForm" color="primary" dark>

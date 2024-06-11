@@ -7,6 +7,8 @@
     title="Activos"
     :items="store.activos"
     :loading="loading"
+    :canDelete="true"
+    :canSelect="true"
   >
     <template #anyadir>
       <v-btn @click="showCreateActivoForm" color="primary" dark>

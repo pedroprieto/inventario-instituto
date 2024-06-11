@@ -12,7 +12,7 @@ const schema = a.schema({
       numeroSerie: a.string(),
     })
     .secondaryIndexes((index) => [index("salaId"), index("tipoId")])
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.authenticated()]),
 
   Tipo: a
     .model({
@@ -20,7 +20,10 @@ const schema = a.schema({
       activos: a.hasMany("Activo", "tipoId"),
       icono: a.string(),
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [
+      allow.authenticated().to(["read"]),
+      allow.group("Admin").to(["read", "create", "update", "delete"]),
+    ]),
 
   ActivoSala: a
     .model({
@@ -29,7 +32,7 @@ const schema = a.schema({
       activo: a.belongsTo("Activo", "activoId"),
       sala: a.belongsTo("Sala", "salaId"),
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.authenticated()]),
 
   Sala: a
     .model({
@@ -38,7 +41,10 @@ const schema = a.schema({
       activos: a.hasMany("Activo", "salaId"),
       auditorias: a.hasMany("Auditoria", "salaId"),
     })
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [
+      allow.authenticated().to(["read"]),
+      allow.group("Admin").to(["read", "create", "update", "delete"]),
+    ]),
   Auditoria: a
     .model({
       salaId: a.id().required(),
@@ -48,7 +54,7 @@ const schema = a.schema({
       sala: a.belongsTo("Sala", "salaId"),
     })
     .secondaryIndexes((index) => [index("salaId")])
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.authenticated()]),
 
   ActivoAuditoria: a
     .model({
@@ -59,7 +65,7 @@ const schema = a.schema({
     })
     .identifier(["activoId", "auditoriaId"])
     .secondaryIndexes((index) => [index("auditoriaId")])
-    .authorization((allow) => [allow.guest()]),
+    .authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -67,7 +73,7 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "iam",
+    defaultAuthorizationMode: "userPool",
   },
 });
 

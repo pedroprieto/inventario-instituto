@@ -5,6 +5,8 @@
     title="Tipos"
     :items="store.tipos"
     :loading="loading"
+    :canDelete="store.isAdmin"
+    :canSelect="store.isAdmin"
   >
     <template #anyadir>
       <v-btn @click="showCreateTipoForm" color="primary" dark>
