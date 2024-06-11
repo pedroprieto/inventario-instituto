@@ -19,4 +19,8 @@ import { useAppStore } from "../store/app";
 
 const store = useAppStore();
 const props = defineProps(["activo"]);
+
+store.backURL = {
+  name: "activos",
+};
 </script>

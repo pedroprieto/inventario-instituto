@@ -68,6 +68,11 @@ let items = ref([]);
 let showForm = ref(false);
 let dialogCerrar = ref(false);
 
+store.backURL = {
+  name: "salaAuditorias",
+  params: { sala: props.sala },
+};
+
 function closeForm() {
   showForm.value = false;
 }

@@ -52,6 +52,10 @@ const level = ref("M");
 const size = ref(100);
 const renderAs = ref("svg");
 
+store.backURL = {
+  name: "activos",
+};
+
 function editItem() {
   router.push({
     name: "activoEdit",

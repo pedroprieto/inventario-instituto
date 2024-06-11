@@ -8,6 +8,10 @@ import { defineProps } from "vue";
 const props = defineProps(["sala"]);
 const store = useAppStore();
 
+store.backURL = {
+  name: "salas",
+};
+
 await store.listAuditoriasBySalaId(props.sala);
 
 function update() {

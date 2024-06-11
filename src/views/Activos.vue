@@ -14,6 +14,4 @@ await store.listActivos();
 function update() {
   store.listActivos();
 }
-
-store.backURL = null;
 </script>

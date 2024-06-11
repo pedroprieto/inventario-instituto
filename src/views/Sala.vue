@@ -54,6 +54,10 @@ import { useAppStore } from "../store/app";
 const store = useAppStore();
 const props = defineProps(["sala"]);
 
+store.backURL = {
+  name: "salas",
+};
+
 let selectedSala = ref(props.sala);
 
 await store.setCurrentSala(props.sala);
