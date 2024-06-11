@@ -36,7 +36,7 @@
     select-strategy="classic"
     v-model:selected="selectedItems"
   >
-    <v-list-item v-for="item in items" :key="item.id" :value="item">
+    <v-list-item v-for="item in filteredItems" :key="item.id" :value="item">
       <v-list-item-title>
         <slot name="titulo" v-bind="item"> </slot>
       </v-list-item-title>
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from "vue";
+import { ref, nextTick, computed } from "vue";
 const props = defineProps(["title", "items", "loading"]);
 const emit = defineEmits(["delete", "edit", "visit"]);
 let dialogDelete = ref(false);
@@ -73,6 +73,20 @@ const store = useAppStore();
 
 let search = ref("");
 let selectedItems = ref([]);
+
+const filteredItems = computed(() => {
+  return props.items.filter((el) => {
+    let expr = false;
+    if (el.nombre) expr = expr || el.nombre.includes(search.value);
+    if (el.id) expr = expr || el.id.includes(search.value);
+    if (el.createdAt) expr = expr || el.createdAt.includes(search.value);
+    if (el.numeroSerie) expr = expr || el.numeroSerie.includes(search.value);
+    if (el.tipoId)
+      expr = expr || el.tipoId == store.getIdTipoByNombre(search.value);
+
+    return expr;
+  });
+});
 
 function deleteItemsConfirm() {
   emit("delete", selectedItems.value);

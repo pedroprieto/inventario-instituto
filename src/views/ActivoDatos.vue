@@ -25,6 +25,14 @@
       <div class="sala text-h5">{{ store.currentItem.sala.nombre }}</div>
       <div class="tipoTitle text-h6 text-right font-weight-light">Tipo:</div>
       <div class="tipo text-h5">{{ store.currentItem.tipo.nombre }}</div>
+      <template v-if="store.currentItem.numeroSerie">
+        <div class="numeroSerieTitle text-h6 text-right font-weight-light">
+          Número de serie:
+        </div>
+        <div class="numeroSerie text-h5">
+          {{ store.currentItem.numeroSerie }}
+        </div>
+      </template>
       <div class="qr">
         <qrcode-vue
           class="qrcode"
@@ -66,7 +74,7 @@ function editItem() {
 
 <style scoped>
 .grid {
-  grid-template-columns: 1fr 6fr 1fr 2fr;
+  grid-template-columns: 1fr 4fr 1fr 2fr;
   display: grid;
   row-gap: 10px;
   column-gap: 10px;
@@ -76,7 +84,8 @@ function editItem() {
     "idTitle identifier identifier identifier"
     "nombreTitle nombre qr qr"
     "salaTitle sala qr qr"
-    "tipoTitle tipo qr qr";
+    "tipoTitle tipo qr qr"
+    "numeroSerieTitle numeroSerie qr qr";
 }
 
 .idTitle {
@@ -102,6 +111,12 @@ function editItem() {
 }
 .tipo {
   grid-area: tipo;
+}
+.numeroSerieTitle {
+  grid-area: numeroSerieTitle;
+}
+.numeroSerie {
+  grid-area: numeroSerie;
 }
 .qr {
   grid-area: qr;

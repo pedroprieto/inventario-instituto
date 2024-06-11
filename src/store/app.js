@@ -51,6 +51,7 @@ export const useAppStore = defineStore("app", {
             "nombre",
             "salaId",
             "tipoId",
+            "numeroSerie",
             "sala.*",
             "tipo.*",
             "salas.*",
@@ -69,6 +70,7 @@ export const useAppStore = defineStore("app", {
               "nombre",
               "salaId",
               "tipoId",
+              "numeroSerie",
               "sala.*",
               "tipo.*",
               "salas.*",
@@ -127,6 +129,7 @@ export const useAppStore = defineStore("app", {
         nombre: item.nombre,
         salaId: item.salaId,
         tipoId: item.tipoId,
+        numeroSerie: item.numeroSerie,
       });
       await client.models.ActivoSala.create({
         activoId: item.id,
@@ -202,6 +205,11 @@ export const useAppStore = defineStore("app", {
       let tipo = this.tipos.find((el) => el.id == tipoId);
       if (tipo) return tipo.nombre;
       return tipoId;
+    },
+    getIdTipoByNombre(nombre) {
+      let tipo = this.tipos.find((el) => el.nombre == nombre);
+      if (tipo) return tipo.id;
+      return nombre;
     },
     getIconoTipoById(tipoId) {
       let tipo = this.tipos.find((el) => el.id == tipoId);
