@@ -8,10 +8,6 @@
         <v-card-text>
           <v-container>
             <v-form @submit.prevent="enviar">
-              <v-checkbox
-                label="Finalizada"
-                v-model="auditoriaData.cerrada"
-              ></v-checkbox>
               <v-select
                 v-model="auditoriaData.tipos"
                 :items="store.tipos"

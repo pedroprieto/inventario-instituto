@@ -11,29 +11,25 @@
       <v-chip size="x-small" v-for="tipo in store.currentAuditoria.tipos">
         {{ store.getNombreTipoById(tipo) }}
       </v-chip>
+      <v-btn
+        v-if="!store.currentAuditoria.cerrada"
+        icon="mdi-pencil"
+        variant="text"
+        @click="editAuditoria"
+      ></v-btn>
     </v-col>
   </v-row>
   <v-row>
     <v-col>
-      Finalizada:
       <v-icon
         v-if="store.currentAuditoria.cerrada"
         icon="mdi-check"
         color="success"
       >
       </v-icon>
-    </v-col>
-  </v-row>
-
-  <v-row>
-    <v-col>
-      <v-btn icon="mdi-pencil" variant="text" @click="editAuditoria"></v-btn>
-    </v-col>
-  </v-row>
-
-  <v-row>
-    <v-col>
-      <v-divider></v-divider>
+      <v-btn color="primary" v-else @click="cerrarAuditoria"
+        >Cerrar auditoría</v-btn
+      >
     </v-col>
   </v-row>
 
@@ -52,6 +48,13 @@
     :auditoriaItem="store.currentAuditoria"
     :isEdit="true"
   ></AuditoriaForm>
+
+  <DialogDelete
+    @close="close"
+    @accept="cerrarAuditoriaConfirm"
+    v-model="dialogCerrar"
+    :message="`¿Desea cerrar la auditoría? Se asignarán los nuevos activos a la sala indicada; los activos de la sala que estén sin asignar, se asignarán a la sala 'DESCONOCIDA'`"
+  ></DialogDelete>
 </template>
 
 <script setup>
@@ -63,9 +66,35 @@ const props = defineProps(["sala", "auditoria"]);
 
 let items = ref([]);
 let showForm = ref(false);
+let dialogCerrar = ref(false);
 
 function closeForm() {
   showForm.value = false;
+}
+
+function cerrarAuditoria() {
+  dialogCerrar.value = true;
+}
+
+async function cerrarAuditoriaConfirm() {
+  let promises = [];
+  for (let it of items.value) {
+    if (it.auditado) {
+      it.salaId = props.sala;
+    } else {
+      it.salaId = 0;
+    }
+    promises.push(store.updateActivo(it));
+  }
+  await Promise.all(promises);
+  store.currentAuditoria.cerrada = true;
+  store.updateAuditoria(store.currentAuditoria);
+  close();
+}
+
+async function close() {
+  dialogCerrar.value = false;
+  // await nextTick();
 }
 
 function editAuditoria() {

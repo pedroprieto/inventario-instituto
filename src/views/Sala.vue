@@ -19,6 +19,7 @@
             >Activos
           </v-tab>
           <v-tab
+            v-if="selectedSala != 0"
             :to="{
               name: 'salaAuditorias',
               params: { sala: sala },
