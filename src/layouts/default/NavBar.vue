@@ -4,35 +4,25 @@
       <v-list-item v-for="route of mainRoutes" :to="route.path">{{
         route.meta.prompt
       }}</v-list-item>
+      <v-divider></v-divider>
+      <v-list-item> {{ store.user.signInDetails.loginId }} </v-list-item>
+      <v-list-item>
+        <v-btn color="secondary" @click="signOut">Cerrar sesión</v-btn>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
-
-  <!--    <v-breadcrumbs :items="useRoute().matched">
-      <template v-slot:title="{ item }">
-        <RouterLink :to="{ name: item.name, params: useRoute().params }">
-          {{ item.meta.prompt }}
-        </RouterLink>
-      </template>
-    </v-breadcrumbs>
--->
-
-  <!--
-    <v-select
-      v-model="selectedSala"
-      :items="store.salas"
-      item-title="nombre"
-      item-value="id"
-      density="compact"
-      variant="plain"
-    ></v-select>
---></template>
+</template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, computed, watch, toRefs } from "vue";
+import { useRouter } from "vue-router";
 import { useAppStore } from "../../store/app";
+import { useAuthenticator } from "@aws-amplify/ui-vue";
+
 const router = useRouter();
 const store = useAppStore();
+
+const { signOut } = toRefs(useAuthenticator());
 
 let selectedSala = ref("");
 
