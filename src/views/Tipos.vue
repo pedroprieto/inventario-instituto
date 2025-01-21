@@ -1,5 +1,6 @@
 <template>
   <ListView
+    v-if="!showForm"
     @delete="deleteTipos"
     @visit="showEditTipoForm"
     title="Tipos"
@@ -28,7 +29,7 @@
   </ListView>
   <TipoForm
     :formTitle="formTitle"
-    v-if="showForm"
+    v-else
     @envio="editOrCreate"
     @close="closeForm"
     :tipoItem="tipoItem"

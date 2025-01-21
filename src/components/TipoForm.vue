@@ -39,7 +39,7 @@
 import { ref } from "vue";
 const props = defineProps(["formTitle", "tipoItem", "isEdit"]);
 let tipoData = ref(Object.assign({}, props.tipoItem));
-const emit = defineEmits(["envio"]);
+const emit = defineEmits(["envio", "close"]);
 let disabled = ref(false);
 
 function enviar() {
