@@ -12,8 +12,6 @@ store.backURL = {
   name: "salas",
 };
 
-await store.listAuditoriasBySalaId(props.sala);
-
 function update() {
   store.listAuditoriasBySalaId(props.sala);
 }

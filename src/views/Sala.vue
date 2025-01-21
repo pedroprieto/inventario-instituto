@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="!showForm">
     <v-card-item>
       <v-card-title align="center">
         <v-row>
@@ -37,7 +37,7 @@
   </v-card>
 
   <SalaForm
-    v-if="showForm"
+    v-else
     :formTitle="store.currentSala.id"
     @envio="updateSala"
     @close="closeForm"
@@ -59,8 +59,6 @@ store.backURL = {
 };
 
 let selectedSala = ref(props.sala);
-
-await store.setCurrentSala(props.sala);
 
 watch(selectedSala, async (newSala, oldSala) => {
   router.push({

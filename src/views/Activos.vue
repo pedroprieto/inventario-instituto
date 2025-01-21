@@ -9,7 +9,6 @@ import { useAppStore } from "../store/app";
 import { useRoute } from "vue-router";
 
 const store = useAppStore();
-await store.listActivos();
 
 function update() {
   store.listActivos();

@@ -1,5 +1,6 @@
 <template>
   <ListView
+    v-if="!showForm"
     @delete="deleteItems"
     @edit="showEditSalaForm"
     @visit="visitSala"
@@ -26,7 +27,7 @@
   </ListView>
   <SalaForm
     :formTitle="formTitle"
-    v-if="showForm"
+    v-else
     @envio="editOrCreate"
     @close="closeForm"
     :salaItem="salaItem"

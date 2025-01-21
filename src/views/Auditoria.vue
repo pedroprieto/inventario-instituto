@@ -112,10 +112,6 @@ async function updateAuditoria(item) {
   await store.setCurrentAuditoria(item.id);
 }
 
-let selectedAuditoria = ref(props.auditoria);
-
-await store.setCurrentAuditoria(props.auditoria);
-
 import { useRouter } from "vue-router";
 const router = useRouter();
 

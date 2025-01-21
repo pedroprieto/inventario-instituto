@@ -1,5 +1,5 @@
 <template>
-  <v-card flat v-if="store.currentItem">
+  <v-card flat>
     <v-card-item>
       <v-card-title align="center"
         >Activo: {{ store.currentItem.nombre }}</v-card-title
@@ -36,12 +36,7 @@ import { useAppStore } from "../store/app";
 
 const store = useAppStore();
 
-import { useRouter } from "vue-router";
-const router = useRouter();
-
 const props = defineProps(["activo"]);
-
-await store.setCurrentItem(props.activo);
 
 store.backURL = {
   name: "activos",

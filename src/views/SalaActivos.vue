@@ -12,8 +12,6 @@ store.backURL = {
   name: "salas",
 };
 
-await store.listActivosBySalaId(props.sala);
-
 function update() {
   store.listActivosBySalaId(props.sala);
 }
