@@ -1,60 +1,62 @@
 <template>
-  <v-row>
-    <v-col>
-      Auditoria:
-      {{ new Date(store.currentAuditoria.createdAt).toLocaleString() }}
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      Tipos:
-      <v-chip size="x-small" v-for="tipo in store.currentAuditoria.tipos">
-        {{ store.getNombreTipoById(tipo) }}
-      </v-chip>
-      <v-btn
-        v-if="!store.currentAuditoria.cerrada"
-        icon="mdi-pencil"
-        variant="text"
-        @click="editAuditoria"
-      ></v-btn>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      <v-icon
-        v-if="store.currentAuditoria.cerrada"
-        icon="mdi-check"
-        color="success"
-      >
-      </v-icon>
-      <v-btn color="primary" v-else @click="cerrarAuditoria"
-        >Cerrar auditoría</v-btn
-      >
-    </v-col>
-  </v-row>
+  <v-container v-if="store.currentAuditoria">
+    <v-row>
+      <v-col>
+        Auditoria:
+        {{ new Date(store.currentAuditoria.createdAt).toLocaleString() }}
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        Tipos:
+        <v-chip size="x-small" v-for="tipo in store.currentAuditoria.tipos">
+          {{ store.getNombreTipoById(tipo) }}
+        </v-chip>
+        <v-btn
+          v-if="!store.currentAuditoria.cerrada"
+          icon="mdi-pencil"
+          variant="text"
+          @click="editAuditoria"
+        ></v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-icon
+          v-if="store.currentAuditoria.cerrada"
+          icon="mdi-check"
+          color="success"
+        >
+        </v-icon>
+        <v-btn color="primary" v-else @click="cerrarAuditoria"
+          >Cerrar auditoría</v-btn
+        >
+      </v-col>
+    </v-row>
 
-  <ActivoAuditoria
-    :items="items"
-    @changeEvent="update"
-    @auditar="addToAuditoria"
-  >
-  </ActivoAuditoria>
+    <ActivoAuditoria
+      :items="items"
+      @changeEvent="update"
+      @auditar="addToAuditoria"
+    >
+    </ActivoAuditoria>
 
-  <AuditoriaForm
-    v-if="showForm"
-    :formTitle="store.currentAuditoria.id"
-    @envio="updateAuditoria"
-    @close="closeForm"
-    :auditoriaItem="store.currentAuditoria"
-    :isEdit="true"
-  ></AuditoriaForm>
+    <AuditoriaForm
+      v-if="showForm"
+      :formTitle="store.currentAuditoria.id"
+      @envio="updateAuditoria"
+      @close="closeForm"
+      :auditoriaItem="store.currentAuditoria"
+      :isEdit="true"
+    ></AuditoriaForm>
 
-  <DialogDelete
-    @close="close"
-    @accept="cerrarAuditoriaConfirm"
-    v-model="dialogCerrar"
-    :message="`¿Desea cerrar la auditoría? Se asignarán los nuevos activos a la sala indicada; los activos de la sala que estén sin asignar, se asignarán a la sala 'DESCONOCIDA'`"
-  ></DialogDelete>
+    <DialogDelete
+      @close="close"
+      @accept="cerrarAuditoriaConfirm"
+      v-model="dialogCerrar"
+      :message="`¿Desea cerrar la auditoría? Se asignarán los nuevos activos a la sala indicada; los activos de la sala que estén sin asignar, se asignarán a la sala 'DESCONOCIDA'`"
+    ></DialogDelete>
+  </v-container>
 </template>
 
 <script setup>
@@ -168,4 +170,9 @@ async function addToAuditoria(idActivo) {
   //  activosAuditados.push(activo);
   //  store.listActivosByAuditoriaId(props.auditoria);
 }
+
+import { onMounted } from "vue";
+onMounted(async () => {
+  await store.setCurrentAuditoria(props.auditoria);
+});
 </script>

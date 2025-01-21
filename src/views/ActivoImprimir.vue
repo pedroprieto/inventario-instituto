@@ -54,6 +54,13 @@ import QrcodeVue from "qrcode.vue";
 import { useAppStore } from "../store/app";
 import { useRouter } from "vue-router";
 const router = useRouter();
+import { onMounted } from "vue";
+
+onMounted(async () => {
+  for (let activoId of activoListId.value) {
+    activoList.value.push(await store.getActivo(activoId));
+  }
+});
 
 function imprimir() {
   window.print();
@@ -72,10 +79,6 @@ const renderAs = ref("svg");
 
 let activoListId = ref(props.activos.split(","));
 let activoList = ref([]);
-
-for (let activoId of activoListId.value) {
-  activoList.value.push(await store.getActivo(activoId));
-}
 </script>
 
 <style>

@@ -13,4 +13,9 @@ const store = useAppStore();
 function update() {
   store.listActivos();
 }
+
+import { onMounted } from "vue";
+onMounted(async () => {
+  await store.listActivos();
+});
 </script>

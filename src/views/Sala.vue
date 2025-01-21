@@ -1,49 +1,51 @@
 <template>
-  <v-card v-if="!showForm">
-    <v-card-item>
-      <v-card-title align="center">
-        <v-row>
-          <v-col cols="12">
-            Sala: {{ store.currentSala.nombre }}
-            <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
-          </v-col>
-        </v-row>
-      </v-card-title>
-      <v-card-subtitle>
-        <v-tabs color="deep-purple-accent-4" align-tabs="center">
-          <v-tab
-            :to="{
-              name: 'salaActivos',
-              params: { sala: sala },
-            }"
-            >Activos
-          </v-tab>
-          <v-tab
-            v-if="selectedSala != 0"
-            :to="{
-              name: 'salaAuditorias',
-              params: { sala: sala },
-            }"
-            >Auditorías
-          </v-tab>
-        </v-tabs>
-      </v-card-subtitle>
-    </v-card-item>
-    <v-card-text>
-      <v-tabs-window>
-        <router-view> </router-view>
-      </v-tabs-window>
-    </v-card-text>
-  </v-card>
+  <v-container v-if="store.currentSala">
+    <v-card v-if="!showForm">
+      <v-card-item>
+        <v-card-title align="center">
+          <v-row>
+            <v-col cols="12">
+              Sala: {{ store.currentSala.nombre }}
+              <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
+            </v-col>
+          </v-row>
+        </v-card-title>
+        <v-card-subtitle>
+          <v-tabs color="deep-purple-accent-4" align-tabs="center">
+            <v-tab
+              :to="{
+                name: 'salaActivos',
+                params: { sala: sala },
+              }"
+              >Activos
+            </v-tab>
+            <v-tab
+              v-if="selectedSala != 0"
+              :to="{
+                name: 'salaAuditorias',
+                params: { sala: sala },
+              }"
+              >Auditorías
+            </v-tab>
+          </v-tabs>
+        </v-card-subtitle>
+      </v-card-item>
+      <v-card-text>
+        <v-tabs-window>
+          <router-view> </router-view>
+        </v-tabs-window>
+      </v-card-text>
+    </v-card>
 
-  <SalaForm
-    v-else
-    :formTitle="store.currentSala.id"
-    @envio="updateSala"
-    @close="closeForm"
-    :salaItem="store.currentSala"
-    :isEdit="true"
-  ></SalaForm>
+    <SalaForm
+      v-else
+      :formTitle="store.currentSala.id"
+      @envio="updateSala"
+      @close="closeForm"
+      :salaItem="store.currentSala"
+      :isEdit="true"
+    ></SalaForm>
+  </v-container>
 </template>
 
 <script setup>
@@ -96,4 +98,9 @@ async function updateSala(item) {
   await store.setCurrentSala(item.id);
   await store.getSalas();
 }
+
+import { onMounted } from "vue";
+onMounted(async () => {
+  await store.setCurrentSala(props.sala);
+});
 </script>

@@ -22,23 +22,6 @@ const routes = [
     meta: {
       prompt: "HOME",
     },
-    beforeEnter: async (to, from) => {
-      const store = useAppStore();
-
-      store.backURL = null;
-
-      const { user } = toRefs(useAuthenticator());
-      let authSession = await fetchAuthSession();
-
-      store.user = user;
-
-      const groups = authSession.tokens.idToken.payload["cognito:groups"];
-
-      store.isAdmin = groups ? groups[0] == "Admin" : false;
-
-      await store.getSalas();
-      await store.getTipos();
-    },
     redirect: (to) => {
       return { path: "/escanear" };
     },
@@ -64,10 +47,6 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "home" */ "@/views/Activos.vue"),
         props: true,
-        beforeEnter: async (to, from) => {
-          const store = useAppStore();
-          await store.listActivos();
-        },
         children: [
           {
             path: "/activos/:activo",
@@ -78,10 +57,6 @@ const routes = [
             component: () =>
               import(/* webpackChunkName: "home" */ "@/views/Activo.vue"),
             props: true,
-            beforeEnter: async (to, from) => {
-              const store = useAppStore();
-              await store.setCurrentItem(to.params.activo);
-            },
             children: [
               {
                 path: "/activos/:activo/edit",
@@ -152,10 +127,6 @@ const routes = [
             component: () =>
               import(/* webpackChunkName: "home" */ "@/views/Sala.vue"),
             props: true,
-            beforeEnter: async (to, from) => {
-              const store = useAppStore();
-              await store.setCurrentSala(to.params.sala);
-            },
             children: [
               {
                 path: "/salas/:sala/activos",
@@ -164,10 +135,6 @@ const routes = [
                   prompt: "Activos",
                 },
                 props: true,
-                beforeEnter: async (to, from) => {
-                  const store = useAppStore();
-                  await store.listActivosBySalaId(to.params.sala);
-                },
                 component: () =>
                   import(
                     /* webpackChunkName: "home" */ "@/views/SalaActivos.vue"
@@ -184,10 +151,6 @@ const routes = [
                     /* webpackChunkName: "home" */ "@/views/Auditorias.vue"
                   ),
                 props: true,
-                beforeEnter: async (to, from) => {
-                  const store = useAppStore();
-                  await store.listAuditoriasBySalaId(to.params.sala);
-                },
               },
               {
                 path: "/salas/:sala/auditorias/:auditoria",
@@ -200,10 +163,6 @@ const routes = [
                     /* webpackChunkName: "home" */ "@/views/Auditoria.vue"
                   ),
                 props: true,
-                beforeEnter: async (to, from) => {
-                  const store = useAppStore();
-                  await store.setCurrentAuditoria(to.params.auditoria);
-                },
               },
             ],
           },

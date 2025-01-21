@@ -15,4 +15,9 @@ store.backURL = {
 function update() {
   store.listActivosBySalaId(props.sala);
 }
+
+import { onMounted } from "vue";
+onMounted(async () => {
+  await store.listActivosBySalaId(props.sala);
+});
 </script>
