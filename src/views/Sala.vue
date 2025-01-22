@@ -1,41 +1,33 @@
 <template>
-  <v-container v-if="store.currentSala">
-    <v-card v-if="!showForm">
-      <v-card-item>
-        <v-card-title align="center">
-          <v-row>
-            <v-col cols="12">
-              Sala: {{ store.currentSala.nombre }}
-              <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
-            </v-col>
-          </v-row>
-        </v-card-title>
-        <v-card-subtitle>
-          <v-tabs color="deep-purple-accent-4" align-tabs="center">
-            <v-tab
-              :to="{
-                name: 'salaActivos',
-                params: { sala: sala },
-              }"
-              >Activos
-            </v-tab>
-            <v-tab
-              v-if="selectedSala != 0"
-              :to="{
-                name: 'salaAuditorias',
-                params: { sala: sala },
-              }"
-              >Auditorías
-            </v-tab>
-          </v-tabs>
-        </v-card-subtitle>
-      </v-card-item>
-      <v-card-text>
-        <v-tabs-window>
-          <router-view> </router-view>
-        </v-tabs-window>
-      </v-card-text>
-    </v-card>
+  <template v-if="store.currentSala">
+    <template v-if="!showForm">
+      <v-row>
+        <v-col cols="12" align="center" class="text-h5 font-weight-bold">
+          Sala: {{ store.currentSala.nombre }}
+          <v-btn icon="mdi-pencil" variant="text" @click="editSala"></v-btn>
+        </v-col>
+      </v-row>
+      <v-tabs color="deep-purple-accent-4" align-tabs="center">
+        <v-tab
+          :to="{
+            name: 'salaActivos',
+            params: { sala: sala },
+          }"
+          >Activos
+        </v-tab>
+        <v-tab
+          v-if="selectedSala != 0"
+          :to="{
+            name: 'salaAuditorias',
+            params: { sala: sala },
+          }"
+          >Auditorías
+        </v-tab>
+      </v-tabs>
+      <v-tabs-window>
+        <router-view> </router-view>
+      </v-tabs-window>
+    </template>
 
     <SalaForm
       v-else
@@ -45,7 +37,7 @@
       :salaItem="store.currentSala"
       :isEdit="true"
     ></SalaForm>
-  </v-container>
+  </template>
 </template>
 
 <script setup>

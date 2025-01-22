@@ -7,6 +7,8 @@
     title="Auditorias"
     :items="store.auditorias"
     :loading="loading"
+    :canDelete="store.isAdmin"
+    :canSelect="store.isAdmin"
   >
     <template #anyadir>
       <v-btn @click="showCreateAuditoriaForm" color="primary" dark>
@@ -26,6 +28,11 @@
       <v-icon v-if="nuevo" icon="mdi-check"></v-icon>
       <v-icon v-if="auditado" icon="mdi-check"></v-icon>
       <v-icon v-if="cerrada" icon="mdi-check"></v-icon>
+    </template>
+    <template #avatar="item">
+      <v-avatar color="grey-lighten-1">
+        <v-icon color="white">mdi-select</v-icon>
+      </v-avatar>
     </template>
   </ListView>
   <AuditoriaForm

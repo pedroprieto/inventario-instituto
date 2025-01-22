@@ -188,15 +188,35 @@ export const useAppStore = defineStore("app", {
         filter.filter.salaId = { eq: selectedSalas.value[0] };
         }*/
 
-      const { data: items, errors } = await client.models.Activo.list(filter);
-      this.activos = items;
+      let token = "";
+      this.activos = [];
+
+      do {
+        filter.nextToken = token;
+        const {
+          data: items,
+          errors,
+          nextToken,
+        } = await client.models.Activo.list(filter);
+        token = nextToken;
+        this.activos = this.activos.concat(items);
+      } while (token);
     },
     async listActivosBySalaId(salaId) {
-      const { data: items, errors } =
-        await client.models.Activo.listActivoBySalaId({
-          salaId,
-        });
-      this.activos = items;
+      let token = "";
+      let options = { salaId };
+      this.activos = [];
+
+      do {
+        options.nextToken = token;
+        const {
+          data: items,
+          errors,
+          nextToken,
+        } = await client.models.Activo.listActivoBySalaId(options);
+        token = nextToken;
+        this.activos = this.activos.concat(items);
+      } while (token);
     },
     getNombreSalaById(salaId) {
       let sala = this.salas.find((el) => el.id == salaId);
@@ -223,7 +243,9 @@ export const useAppStore = defineStore("app", {
         await client.models.Auditoria.listAuditoriaBySalaId({
           salaId,
         });
-      this.auditorias = items;
+      this.auditorias = items.sort(
+        (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
     },
     async deleteAuditoria(item) {
       await client.models.Auditoria.delete({
@@ -265,11 +287,24 @@ export const useAppStore = defineStore("app", {
       this.currentAuditoria = res.data;
     },
     async getActivosByAuditoriaId(auditoriaId) {
-      const { data: items, errors } =
-        await client.models.ActivoAuditoria.listActivoAuditoriaByAuditoriaId({
-          auditoriaId,
-        });
-      return items;
+      let token = "";
+      let options = { auditoriaId };
+      let res = [];
+
+      do {
+        options.nextToken = token;
+        const {
+          data: items,
+          errors,
+          nextToken,
+        } = await client.models.ActivoAuditoria.listActivoAuditoriaByAuditoriaId(
+          options
+        );
+        token = nextToken;
+        res = res.concat(items);
+      } while (token);
+
+      return res;
     },
     async createActivoAuditoria(activoId, auditoriaId) {
       return client.models.ActivoAuditoria.create({

@@ -10,7 +10,7 @@
     :canDelete="store.isAdmin"
     :canSelect="store.isAdmin"
   >
-    <template #anyadir>
+    <template #anyadir v-if="store.isAdmin">
       <v-btn @click="showCreateSalaForm" color="primary" dark>
         <v-icon size="large" class="me-2"> mdi-plus </v-icon>
         Añadir
@@ -23,6 +23,11 @@
 
     <template #subtitulo="{ nombre, salaId }">
       {{ store.getNombreSalaById(salaId) }}
+    </template>
+    <template #avatar="item">
+      <v-avatar color="grey-lighten-1">
+        <v-icon color="white">mdi-select</v-icon>
+      </v-avatar>
     </template>
   </ListView>
   <SalaForm
