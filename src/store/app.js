@@ -243,7 +243,9 @@ export const useAppStore = defineStore("app", {
         await client.models.Auditoria.listAuditoriaBySalaId({
           salaId,
         });
-      this.auditorias = items.sort((a, b) => a.createdAt < b.createdAt);
+      this.auditorias = items.sort(
+        (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      );
     },
     async deleteAuditoria(item) {
       await client.models.Auditoria.delete({

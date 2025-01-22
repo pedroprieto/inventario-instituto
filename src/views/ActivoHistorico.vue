@@ -3,7 +3,7 @@
     <v-list-item
       v-for="sala in store.currentItem.salas
         .slice()
-        .sort((a, b) => a.createdAt < b.createdAt)"
+        .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))"
       :key="sala.id"
     >
       <v-list-item-title>
