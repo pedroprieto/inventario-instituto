@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="store.currentSala">
+  <template v-if="store.currentSala">
     <v-card v-if="!showForm">
       <v-card-item>
         <v-card-title align="center">
@@ -45,7 +45,7 @@
       :salaItem="store.currentSala"
       :isEdit="true"
     ></SalaForm>
-  </v-container>
+  </template>
 </template>
 
 <script setup>

@@ -41,15 +41,20 @@
       :key="item.id"
       :value="canSelect ? item : null"
     >
-      <v-list-item-title>
+      <v-list-item-title @click="visitItem(item)">
         <slot name="titulo" v-bind="item"> </slot>
       </v-list-item-title>
-      <v-list-item-subtitle>
+      <v-list-item-subtitle @click="visitItem(item)">
         <slot name="subtitulo" v-bind="item"> </slot>
       </v-list-item-subtitle>
 
-      <template v-slot:prepend>
-        <slot name="avatar" v-bind="item"> </slot>
+      <template v-slot:prepend="{ isSelected }">
+        <v-list-item-action start>
+          <slot name="avatar" v-bind="item" v-if="!isSelected"> </slot>
+          <v-avatar color="secondary" v-else>
+            <v-icon icon="mdi-check"></v-icon>
+          </v-avatar>
+        </v-list-item-action>
       </template>
       <template v-slot:append>
         <v-btn icon="mdi-chevron-right" variant="text" @click="visitItem(item)">
