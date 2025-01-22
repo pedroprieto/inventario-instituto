@@ -9,7 +9,7 @@
     :canDelete="store.isAdmin"
     :canSelect="store.isAdmin"
   >
-    <template #anyadir>
+    <template #anyadir v-if="store.isAdmin">
       <v-btn @click="showCreateTipoForm" color="primary" dark>
         <v-icon size="large" class="me-2"> mdi-plus </v-icon>
         Añadir
