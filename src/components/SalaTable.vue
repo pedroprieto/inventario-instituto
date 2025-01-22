@@ -24,6 +24,11 @@
     <template #subtitulo="{ nombre, salaId }">
       {{ store.getNombreSalaById(salaId) }}
     </template>
+    <template #avatar="item">
+      <v-avatar color="grey-lighten-1">
+        <v-icon color="white">mdi-select</v-icon>
+      </v-avatar>
+    </template>
   </ListView>
   <SalaForm
     :formTitle="formTitle"
