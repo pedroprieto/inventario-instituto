@@ -92,10 +92,11 @@ let selectedItems = ref([]);
 const filteredItems = computed(() => {
   return props.items.filter((el) => {
     let expr = false;
-    if (el.nombre) expr = expr || el.nombre.includes(search.value);
-    if (el.id) expr = expr || el.id.includes(search.value);
-    if (el.createdAt) expr = expr || el.createdAt.includes(search.value);
-    if (el.numeroSerie) expr = expr || el.numeroSerie.includes(search.value);
+    let regex = new RegExp(`.*${search.value.trim()}.*`, "i");
+    if (el.nombre) expr = expr || el.nombre.match(regex);
+    if (el.id) expr = expr || el.id.match(regex);
+    if (el.createdAt) expr = expr || el.createdAt.match(regex);
+    if (el.numeroSerie) expr = expr || el.numeroSerie.match(regex);
     if (el.tipoId)
       expr = expr || el.tipoId == store.getIdTipoByNombre(search.value);
 
