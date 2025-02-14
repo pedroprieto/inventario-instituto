@@ -10,6 +10,8 @@ const backend = defineBackend({
   data,
 });
 
+console.log(process.env.AWS_BRANCH);
+
 const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
 for (const table of Object.values(amplifyDynamoDbTables)) {
   table.deletionProtectionEnabled = true;
