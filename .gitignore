@@ -3,10 +3,12 @@ node_modules
 .amplify
 amplify_outputs
 amplifyconfiguration
+amplify_outputs.json
 
 .DS_Store
 node_modules
 /dist
+components.d.ts
 
 # local env files
 .env.local
