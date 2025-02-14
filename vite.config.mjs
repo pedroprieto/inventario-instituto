@@ -3,31 +3,36 @@ import Components from "unplugin-vue-components/vite";
 import Vue from "@vitejs/plugin-vue";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import ViteFonts from "unplugin-fonts/vite";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 
 // Utilities
 import { defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
+let plugins = [
+  Vue({
+    template: { transformAssetUrls },
+  }),
+  // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
+  Vuetify(),
+  Components(),
+  ViteFonts({
+    google: {
+      families: [
+        {
+          name: "Roboto",
+          styles: "wght@100;300;400;500;700;900",
+        },
+      ],
+    },
+  }),
+];
+
+if (process.env.NODE_ENV) plugins.push(basicSsl());
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    Vue({
-      template: { transformAssetUrls },
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
-    Vuetify(),
-    Components(),
-    ViteFonts({
-      google: {
-        families: [
-          {
-            name: "Roboto",
-            styles: "wght@100;300;400;500;700;900",
-          },
-        ],
-      },
-    }),
-  ],
+  plugins,
   define: { "process.env": {} },
   resolve: {
     alias: {
