@@ -1,6 +1,14 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
+import {
+  BackupPlan,
+  BackupPlanRule,
+  BackupResource,
+  BackupVault,
+} from "aws-cdk-lib/aws-backup";
+import { Schedule } from "aws-cdk-lib/aws-events";
+import { Duration } from "aws-cdk-lib/core";
 
 /**
  * @see https://docs.amplify.aws/react/build-a-backend/ to add storage, functions, and more
@@ -12,15 +20,6 @@ const backend = defineBackend({
 
 // Backups solo en master
 if (process.env.AWS_BRANCH == "master") {
-  import {
-    BackupPlan,
-    BackupPlanRule,
-    BackupResource,
-    BackupVault,
-  } from "aws-cdk-lib/aws-backup";
-  import { Schedule } from "aws-cdk-lib/aws-events";
-  import { Duration } from "aws-cdk-lib/core";
-
   const { amplifyDynamoDbTables } = backend.data.resources.cfnResources;
   for (const table of Object.values(amplifyDynamoDbTables)) {
     table.deletionProtectionEnabled = true;
